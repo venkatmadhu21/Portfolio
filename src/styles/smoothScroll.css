@@ -1,0 +1,97 @@
+/* Use browser's native smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar styling - more subtle */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(150, 150, 150, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(150, 150, 150, 0.5);
+}
+
+/* Optimize for smooth scrolling */
+body {
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: none;
+  scroll-padding-top: 80px; /* Add padding for fixed header */
+}
+
+/* Prevent content jump on page load */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Smooth transitions for all elements - gentler */
+* {
+  transition: background-color 0.5s ease-out, color 0.5s ease-out, transform 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+/* Scroll animation classes - much more subtle */
+.scroll-animate {
+  opacity: 0.8;
+  transform: translateY(10px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+.scroll-animate.animate {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-animate-left {
+  opacity: 0.8;
+  transform: translateX(-10px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+.scroll-animate-left.animate {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scroll-animate-right {
+  opacity: 0.8;
+  transform: translateX(10px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+.scroll-animate-right.animate {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scroll-animate-scale {
+  opacity: 0.9;
+  transform: scale(0.98);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+
+.scroll-animate-scale.animate {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Optimize animations */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
