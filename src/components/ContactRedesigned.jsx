@@ -63,21 +63,32 @@ const ContactRedesigned = ({ isDarkMode }) => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2
+        staggerChildren: 0.15,
+        delayChildren: 0.3,
+        duration: 0.8,
+        ease: 'easeInOut'
       }
     }
   };
   
   const itemVariants = {
-    hidden: { y: 20, opacity: 0 },
+    hidden: { y: 30, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
         type: "spring",
         stiffness: 100,
-        damping: 12
+        damping: 15,
+        mass: 0.8
+      }
+    },
+    hover: {
+      y: -5,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 10
       }
     }
   };
@@ -227,7 +238,7 @@ const ContactRedesigned = ({ isDarkMode }) => {
             className="glass-card p-8 rounded-xl overflow-hidden relative"
             variants={cardVariants}
             whileHover="hover"
-            variants={glowVariants}
+             
           >
             {/* Decorative elements */}
             <div className="absolute -top-20 -left-20 w-40 h-40 bg-primary-500/10 rounded-full blur-3xl"></div>
@@ -435,11 +446,26 @@ const ContactRedesigned = ({ isDarkMode }) => {
               >
                 <motion.button
                   type="submit"
-                  className="w-full py-3 px-6 rounded-lg bg-gradient-to-r from-primary-600 to-secondary-600 text-white font-medium shadow-lg shadow-primary-500/20 hover:shadow-xl hover:shadow-primary-500/30 transition-all duration-300"
+                  className="glass-button w-full"
                   whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.6 }}
                 >
-                  Send Message
+                  <motion.span
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.3, delay: 0.8 }}
+                  >
+                    Send Message
+                  </motion.span>
+                  <motion.div
+                    className="absolute inset-0 rounded-full bg-white/10"
+                    initial={{ scale: 0, opacity: 0 }}
+                    whileHover={{ scale: 1, opacity: 1 }}
+                    transition={{ duration: 0.3 }}
+                  />
                 </motion.button>
               </motion.div>
             </form>
@@ -457,7 +483,7 @@ const ContactRedesigned = ({ isDarkMode }) => {
             className="glass-card p-8 rounded-xl overflow-hidden mb-8 relative"
             variants={cardVariants}
             whileHover="hover"
-            variants={glowVariants}
+            
           >
             {/* Decorative elements */}
             <div className="absolute -top-20 -right-20 w-40 h-40 bg-secondary-500/10 rounded-full blur-3xl"></div>
@@ -512,7 +538,7 @@ const ContactRedesigned = ({ isDarkMode }) => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.6 }}
             whileHover="hover"
-            variants={glowVariants}
+            
           >
             <div className="flex items-start">
               <div className="w-12 h-12 rounded-full bg-primary-500/20 flex items-center justify-center mr-4 text-primary-400">
@@ -529,36 +555,7 @@ const ContactRedesigned = ({ isDarkMode }) => {
         </motion.div>
       </div>
       
-      {/* Map or location */}
-      <motion.div 
-        className="mt-16"
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.8 }}
-      >
-        <div className="glass-card p-6 rounded-xl overflow-hidden">
-          <div className="aspect-[21/9] rounded-lg overflow-hidden relative">
-            <div className="absolute inset-0 bg-gradient-to-br from-primary-500/10 to-secondary-500/10 mix-blend-overlay z-10"></div>
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="text-center">
-                <div className="w-16 h-16 rounded-full bg-primary-500/20 flex items-center justify-center mx-auto mb-4 text-primary-400">
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </div>
-                <h3 className="text-xl font-bold text-dark-100 mb-2">Hyderabad, India</h3>
-                <p className="text-dark-300">Currently based in the vibrant tech hub of Hyderabad</p>
-              </div>
-            </div>
-            <img 
-              src="https://placehold.co/1200x600/0f172a/ffffff?text=Hyderabad,+India" 
-              alt="Hyderabad, India" 
-              className="w-full h-full object-cover opacity-50"
-            />
-          </div>
-        </div>
-      </motion.div>
+      {/* Map section removed */}
     </div>
   );
 };

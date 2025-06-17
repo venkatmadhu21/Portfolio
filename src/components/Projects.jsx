@@ -1064,4 +1064,4 @@ const Projects = ({ isDarkMode }) => {
   );
 };
 
-export default Projects;
+export default Projects;  

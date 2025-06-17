@@ -221,8 +221,9 @@ const SkillsRedesigned = ({ isDarkMode }) => {
   const glowVariants = {
     hover: {
       boxShadow: isDarkMode 
-        ? '0 0 25px 5px rgba(14, 165, 233, 0.3), 0 0 10px 1px rgba(139, 92, 246, 0.3)' 
-        : '0 0 25px 5px rgba(2, 132, 199, 0.2), 0 0 10px 1px rgba(124, 58, 237, 0.2)',
+        ? '0 0 30px 8px rgba(14, 165, 233, 0.4), 0 0 15px 2px rgba(139, 92, 246, 0.4)' 
+        : '0 0 30px 8px rgba(2, 132, 199, 0.3), 0 0 15px 2px rgba(124, 58, 237, 0.3)',
+      scale: 1.02,
       scale: 1.05,
       y: -5,
       transition: {

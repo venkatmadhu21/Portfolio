@@ -1,6 +1,8 @@
-import React, { Suspense, useRef } from 'react';
-import { motion } from 'framer-motion';
+import React, { Suspense, useRef, useEffect } from 'react';
+import { motion, useAnimation } from 'framer-motion';
 import HeroAnimation from './3d/HeroAnimation';
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, Float } from '@react-three/drei';
 
 const Home = ({ isDarkMode, onNavigate }) => {
   // Ref for container
@@ -23,29 +25,42 @@ const Home = ({ isDarkMode, onNavigate }) => {
   return (
     <motion.div 
       ref={containerRef}
-      className="container mx-auto px-4 md:px-8 lg:px-16 flex flex-col md:flex-row items-center justify-center gap-8 min-h-screen pt-16 md:pt-0"
+      className="container mx-auto px-4 md:px-8 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12 min-h-screen pt-16 md:pt-8 lg:pt-0 relative"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.8 }}
     >
-      <div className="max-w-2xl md:w-1/2 md:pr-8 mb-12 md:mb-0">
+      {/* Background gradients */}
+      <div className="absolute inset-0 -z-10">
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-500/5 via-transparent to-secondary-500/5 dark:from-primary-500/10 dark:to-secondary-500/10 blur-3xl animate-pulse-slow"></div>
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(14,165,233,0.1),transparent_50%)] animate-spin-slow"></div>
+      </div>
+      
+      {/* Left content section */}
+      <div className="max-w-3xl lg:w-3/5 lg:pr-6 mb-8 lg:mb-0 relative">
+        <div className="absolute top-20 right-10 w-64 h-64 opacity-20 blur-3xl bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full animate-pulse-slow"></div>
         <motion.div
           custom={1}
           variants={fadeUpVariant}
           initial="hidden"
           animate="visible"
-          className="mb-3"
+          className="mb-3 relative inline-block"
         >
-          <p className="font-mono text-lg tracking-wider text-primary-400 opacity-90">
+          <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg blur opacity-20 group-hover:opacity-30 transition duration-1000"></div>
+          <p className="font-mono text-lg tracking-wider text-primary-400 opacity-90 relative">
             Hello world, I'm
           </p>
         </motion.div>
+      
         
         <motion.h1
           custom={2}
           variants={fadeUpVariant}
           initial="hidden"
           animate="visible"
-          className="section-title text-6xl md:text-8xl font-bold mb-4 tracking-tight leading-none"
+          className="section-title text-5xl md:text-6xl lg:text-7xl font-bold mb-4 tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-r from-primary-500 via-secondary-500 to-accent-500 animate-gradient-x dark:from-primary-400 dark:via-secondary-400 dark:to-accent-400"
         >
-          Venkat Madhu<span className="text-primary-400">.</span>
+          Venkat Madhu Mohan<span className="text-primary-400">.</span>
         </motion.h1>
         
         <motion.h2
@@ -53,7 +68,7 @@ const Home = ({ isDarkMode, onNavigate }) => {
           variants={fadeUpVariant}
           initial="hidden"
           animate="visible"
-          className={`text-3xl md:text-5xl font-bold mb-8 ${isDarkMode ? 'text-dark-300/80' : 'text-gray-700'} tracking-tight`}
+          className={`text-2xl md:text-3xl lg:text-4xl font-bold mb-6 ${isDarkMode ? 'text-dark-300/80' : 'text-gray-700'} tracking-tight`}
         >
           I craft digital experiences that matter.
         </motion.h2>
@@ -63,9 +78,9 @@ const Home = ({ isDarkMode, onNavigate }) => {
           variants={fadeUpVariant}
           initial="hidden"
           animate="visible"
-          className={`text-lg md:text-xl max-w-xl mb-14 ${isDarkMode ? 'text-dark-300/90' : 'text-gray-700'} leading-relaxed`}
+          className={`text-base md:text-lg lg:text-xl max-w-2xl mb-10 ${isDarkMode ? 'text-dark-300/90' : 'text-gray-700'} leading-relaxed`}
         >
-          A second-year <span className="text-primary-400 font-medium">Computer Science</span> student at Keshav Memorial College of Engineering with a passion for creating innovative solutions. I blend strong fundamentals in <span className="text-secondary-400 font-medium">C++ and data structures</span> with expertise in <span className="text-primary-400 font-medium">full-stack web development</span>.
+          A  <span className="text-primary-400 font-medium">Computer Science</span> student at Keshav Memorial College of Engineering with a passion for creating innovative solutions. I blend strong fundamentals in <span className="text-secondary-400 font-medium">C++ and data structures</span> with expertise in <span className="text-primary-400 font-medium">full-stack web development</span>.
           <br/><br/>
           Currently exploring the intersection of <span className="text-primary-400 font-medium">AI</span> and <span className="text-secondary-400 font-medium">web technologies</span> to build the next generation of applications.
         </motion.p>
@@ -75,7 +90,7 @@ const Home = ({ isDarkMode, onNavigate }) => {
           variants={fadeUpVariant}
           initial="hidden"
           animate="visible"
-          className="flex flex-wrap gap-5"
+          className="flex flex-wrap gap-4"
         >
           <motion.a
             href="#projects"
@@ -101,19 +116,32 @@ const Home = ({ isDarkMode, onNavigate }) => {
                 damping: 10 
               }
             }}
-            className="glass-button group relative px-8 py-4 text-lg font-medium"
+            className="glass-button group relative px-6 py-3 text-base font-medium"
           >
-            <span className="relative z-10 flex items-center">
+            <motion.span 
+              className="relative z-10 flex items-center"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
+            >
               View My Projects
-              <svg 
-                className="w-5 h-5 ml-2 transform group-hover:translate-x-2 transition-transform duration-300" 
+              <motion.svg 
+                className="w-5 h-5 ml-2" 
                 fill="none" 
                 viewBox="0 0 24 24" 
                 stroke="currentColor"
+                whileHover={{ x: 8, rotate: 5 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </span>
+              </motion.svg>
+            </motion.span>
+            <motion.div
+              className="absolute inset-0 rounded-full bg-gradient-to-r from-white/10 to-white/5"
+              initial={{ scale: 0, opacity: 0 }}
+              whileHover={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            />
           </motion.a>
           
           <motion.a
@@ -140,19 +168,26 @@ const Home = ({ isDarkMode, onNavigate }) => {
                 damping: 10 
               }
             }}
-            className="accent-button group px-8 py-4 text-lg font-medium"
+            className="accent-button group px-6 py-3 text-base font-medium"
           >
-            <span className="flex items-center">
+            <motion.span 
+              className="flex items-center"
+              initial={{ opacity: 0, x: -10 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5, delay: 0.9 }}
+            >
               Get In Touch
-              <svg 
-                className="w-5 h-5 ml-2 transform group-hover:translate-x-2 transition-transform duration-300" 
+              <motion.svg 
+                className="w-5 h-5 ml-2" 
                 fill="none" 
                 viewBox="0 0 24 24" 
                 stroke="currentColor"
+                whileHover={{ x: 8, scale: 1.1 }}
+                transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-              </svg>
-            </span>
+              </motion.svg>
+            </motion.span>
           </motion.a>
         </motion.div>
         
@@ -162,13 +197,14 @@ const Home = ({ isDarkMode, onNavigate }) => {
           variants={fadeUpVariant}
           initial="hidden"
           animate="visible"
-          className="flex items-center mt-20 space-x-8"
+          className="flex items-center mt-12 space-x-6"
         >
-          <div className={`w-24 h-px bg-gradient-to-r from-transparent ${isDarkMode ? 'via-dark-700' : 'via-gray-300'} to-transparent`}></div>
+          <div className={`w-16 h-px bg-gradient-to-r from-transparent ${isDarkMode ? 'via-dark-700' : 'via-gray-300'} to-transparent`}></div>
           
-          <div className="flex space-x-6">
+          <div className="flex space-x-4 relative group">
+            <div className="absolute -inset-2 rounded-lg bg-gradient-to-r from-primary-500/20 via-secondary-500/20 to-accent-500/20 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <motion.a
-              href="https://github.com/venkatmadhumohan"
+              href="https://github.com/venkatmadhu21"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ 
@@ -177,7 +213,7 @@ const Home = ({ isDarkMode, onNavigate }) => {
                 transition: { type: "spring", stiffness: 400, damping: 10 }
               }}
               whileTap={{ scale: 0.9 }}
-              className={`relative p-3 rounded-full ${isDarkMode ? 'bg-dark-800/40 text-dark-400' : 'bg-gray-200/80 text-gray-600'} hover:text-primary-400 transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/20`}
+              className={`relative p-2.5 rounded-full ${isDarkMode ? 'bg-dark-800/40 text-dark-400' : 'bg-gray-200/80 text-gray-600'} hover:text-primary-400 transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/20`}
             >
               <span className="sr-only">GitHub</span>
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -187,7 +223,7 @@ const Home = ({ isDarkMode, onNavigate }) => {
             </motion.a>
             
             <motion.a
-              href="https://www.linkedin.com/in/venkatmadhumohan"
+              href="https://www.linkedin.com/in/venkatmadhu"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ 
@@ -196,7 +232,7 @@ const Home = ({ isDarkMode, onNavigate }) => {
                 transition: { type: "spring", stiffness: 400, damping: 10 }
               }}
               whileTap={{ scale: 0.9 }}
-              className={`relative p-3 rounded-full ${isDarkMode ? 'bg-dark-800/40 text-dark-400' : 'bg-gray-200/80 text-gray-600'} hover:text-secondary-400 transition-all duration-300 hover:shadow-lg hover:shadow-secondary-500/20`}
+              className={`relative p-2.5 rounded-full ${isDarkMode ? 'bg-dark-800/40 text-dark-400' : 'bg-gray-200/80 text-gray-600'} hover:text-secondary-400 transition-all duration-300 hover:shadow-lg hover:shadow-secondary-500/20`}
             >
               <span className="sr-only">LinkedIn</span>
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
@@ -206,7 +242,7 @@ const Home = ({ isDarkMode, onNavigate }) => {
             </motion.a>
             
             <motion.a
-              href="https://www.hackerrank.com/venkatmadhumohan"
+              href="https://leetcode.com/u/venkatmadhu/"
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ 
@@ -215,24 +251,24 @@ const Home = ({ isDarkMode, onNavigate }) => {
                 transition: { type: "spring", stiffness: 400, damping: 10 }
               }}
               whileTap={{ scale: 0.9 }}
-              className={`relative p-3 rounded-full ${isDarkMode ? 'bg-dark-800/40 text-dark-400' : 'bg-gray-200/80 text-gray-600'} hover:text-accent-400 transition-all duration-300 hover:shadow-lg hover:shadow-accent-500/20`}
+              className={`relative p-2.5 rounded-full ${isDarkMode ? 'bg-dark-800/40 text-dark-400' : 'bg-gray-200/80 text-gray-600'} hover:text-accent-400 transition-all duration-300 hover:shadow-lg hover:shadow-accent-500/20`}
             >
-              <span className="sr-only">HackerRank</span>
+              <span className="sr-only">LeetCode</span>
               <svg className="h-6 w-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 0c1.285 0 9.75 4.886 10.392 6 .645 1.115.645 10.885 0 12S13.287 24 12 24s-9.75-4.885-10.395-6c-.641-1.115-.641-10.885 0-12C2.25 4.886 10.715 0 12 0zm2.295 6.799c-.141 0-.258.115-.258.258v3.875H9.963V6.908h.701c.141 0 .254-.115.254-.258 0-.094-.049-.176-.123-.221L9.223 4.92c-.049-.063-.141-.109-.226-.109-.086 0-.178.045-.226.109L7.076 6.43c-.072.045-.12.126-.12.221 0 .143.113.258.255.258h.704l.008 10.035c0 .145.111.258.254.258h1.492c.142 0 .259-.115.259-.256v-4.004h4.073v4.152h-.699c-.143 0-.256.115-.256.258 0 .092.048.174.119.219l1.579 1.51c.044.061.141.109.225.109.085 0 .179-.045.228-.109l1.574-1.51c.072-.045.12-.127.12-.219 0-.143-.115-.258-.255-.258h-.704l-.007-10.034c0-.145-.114-.26-.255-.26h-1.494v.002z" />
+                <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 1.271 1.818l4.277 4.193.039.038c2.248 2.165 5.852 2.133 8.063-.074l2.396-2.392c.54-.54.54-1.414.003-1.955a1.378 1.378 0 0 0-1.951-.003l-2.396 2.392a3.021 3.021 0 0 1-4.205.038l-.02-.019-4.276-4.193c-.652-.64-.972-1.469-.948-2.263a2.68 2.68 0 0 1 .066-.523 2.545 2.545 0 0 1 .619-1.164L9.13 8.114c1.058-1.134 3.204-1.27 4.43-.278l3.501 2.831c.593.48 1.461.387 1.94-.207a1.384 1.384 0 0 0-.207-1.943l-3.5-2.831c-.8-.647-1.766-1.045-2.774-1.202l2.015-2.158A1.384 1.384 0 0 0 13.483 0zm-2.866 12.815a1.38 1.38 0 0 0-1.38 1.382 1.38 1.38 0 0 0 1.38 1.382H20.79a1.38 1.38 0 0 0 1.38-1.382 1.38 1.38 0 0 0-1.38-1.382z"/>
               </svg>
               <span className="absolute inset-0 rounded-full bg-accent-400/10 scale-0 opacity-0 hover:scale-100 hover:opacity-100 transition-all duration-300"></span>
             </motion.a>
             
             <motion.a
-              href="mailto:venkatmadhumohan@gmail.com"
+              href="mailto:venkatmadhumohann@gmail.com"
               whileHover={{ 
                 y: -5, 
                 scale: 1.1,
                 transition: { type: "spring", stiffness: 400, damping: 10 }
               }}
               whileTap={{ scale: 0.9 }}
-              className={`relative p-3 rounded-full ${isDarkMode ? 'bg-dark-800/40 text-dark-400' : 'bg-gray-200/80 text-gray-600'} hover:text-secondary-400 transition-all duration-300 hover:shadow-lg hover:shadow-secondary-500/20`}
+              className={`relative p-2.5 rounded-full ${isDarkMode ? 'bg-dark-800/40 text-dark-400' : 'bg-gray-200/80 text-gray-600'} hover:text-secondary-400 transition-all duration-300 hover:shadow-lg hover:shadow-secondary-500/20`}
             >
               <span className="sr-only">Email</span>
               <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -242,13 +278,13 @@ const Home = ({ isDarkMode, onNavigate }) => {
             </motion.a>
           </div>
           
-          <div className={`w-24 h-px bg-gradient-to-r ${isDarkMode ? 'from-dark-700 via-dark-700' : 'from-gray-300 via-gray-300'} to-transparent`}></div>
+          <div className={`w-16 h-px bg-gradient-to-r ${isDarkMode ? 'from-dark-700 via-dark-700' : 'from-gray-300 via-gray-300'} to-transparent`}></div>
         </motion.div>
       </div>
       
-      {/* 3D Animation */}
+      {/* 3D Animation Section */}
       <motion.div 
-        className="md:w-1/2 h-[500px] md:h-[700px] relative flex items-center justify-center overflow-visible"
+        className="lg:w-2/5 h-[400px] md:h-[450px] lg:h-[500px] relative flex items-center justify-center overflow-visible"
         initial={{ opacity: 0, scale: 0.8 }}
         animate={{ 
           opacity: 1, 
@@ -266,23 +302,23 @@ const Home = ({ isDarkMode, onNavigate }) => {
           }
         }}
       >
-        {/* Decorative elements */}
-        <div className="absolute -top-10 -right-10 w-64 h-64 bg-primary-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-10 -left-10 w-64 h-64 bg-secondary-500/10 rounded-full blur-3xl"></div>
+        {/* Decorative gradient blobs */}
+        <div className="absolute -top-8 -right-8 w-48 h-48 bg-primary-500/10 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-secondary-500/10 rounded-full blur-3xl"></div>
         
-        {/* Glass card with enhanced styling */}
+        {/* Glass card container */}
         <div className={`absolute inset-0 glass-card rounded-2xl backdrop-blur-sm ${
           isDarkMode ? 'shadow-glow-purple border border-secondary-500/20' : 'shadow-glow-blue border border-primary-500/20'
         }`}>
           {/* Decorative dots */}
-          <div className="absolute top-6 left-6 flex space-x-2">
-            <div className="w-3 h-3 rounded-full bg-primary-500/50"></div>
-            <div className="w-3 h-3 rounded-full bg-secondary-500/50"></div>
-            <div className="w-3 h-3 rounded-full bg-accent-500/50"></div>
+          <div className="absolute top-4 left-4 flex space-x-2">
+            <div className="w-2.5 h-2.5 rounded-full bg-primary-500/50"></div>
+            <div className="w-2.5 h-2.5 rounded-full bg-secondary-500/50"></div>
+            <div className="w-2.5 h-2.5 rounded-full bg-accent-500/50"></div>
           </div>
         </div>
         
-        {/* 3D Animation */}
+        {/* 3D Animation Canvas */}
         <div className="absolute inset-0 flex items-center justify-center">
           <Suspense fallback={
             <div className="h-full flex flex-col items-center justify-center">
@@ -290,18 +326,33 @@ const Home = ({ isDarkMode, onNavigate }) => {
               <p className="text-primary-400 font-mono text-sm animate-pulse">Loading 3D Experience...</p>
             </div>
           }>
-            <HeroAnimation isDarkMode={isDarkMode} />
+            <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
+              <ambientLight intensity={isDarkMode ? 0.4 : 0.6} />
+              <directionalLight 
+                position={[10, 10, 5]} 
+                intensity={isDarkMode ? 0.5 : 0.7}
+              />
+              <Float
+                speed={1.2}
+                rotationIntensity={0.3}
+                floatIntensity={0.5}
+                floatingRange={[-0.2, 0.2]}
+              >
+                <HeroAnimation isDarkMode={isDarkMode} />
+              </Float>
+              <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
+            </Canvas>
           </Suspense>
         </div>
         
         {/* Decorative corner accents */}
-        <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden">
-          <div className={`absolute top-0 right-0 w-8 h-8 transform rotate-45 translate-x-1/2 -translate-y-1/2 ${
+        <div className="absolute top-0 right-0 w-12 h-12 overflow-hidden">
+          <div className={`absolute top-0 right-0 w-6 h-6 transform rotate-45 translate-x-1/2 -translate-y-1/2 ${
             isDarkMode ? 'bg-secondary-500/20' : 'bg-primary-500/20'
           }`}></div>
         </div>
-        <div className="absolute bottom-0 left-0 w-16 h-16 overflow-hidden">
-          <div className={`absolute bottom-0 left-0 w-8 h-8 transform rotate-45 -translate-x-1/2 translate-y-1/2 ${
+        <div className="absolute bottom-0 left-0 w-12 h-12 overflow-hidden">
+          <div className={`absolute bottom-0 left-0 w-6 h-6 transform rotate-45 -translate-x-1/2 translate-y-1/2 ${
             isDarkMode ? 'bg-primary-500/20' : 'bg-secondary-500/20'
           }`}></div>
         </div>

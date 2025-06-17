@@ -14,6 +14,7 @@ import AboutMeRedesigned from './components/AboutMeRedesigned';
 import FooterRedesigned from './components/FooterRedesigned';
 import ParticleBackground from './components/ParticleBackground';
 import ScrollProgress from './components/ScrollProgress';
+import CustomCursor from './components/CustomCursorOptimized';
 
 
 function App() {
@@ -262,6 +263,9 @@ function App() {
       
       {/* Footer */}
       <FooterRedesigned isDarkMode={isDarkMode} />
+      
+      {/* Custom Cursor */}
+      {!isLoading && <CustomCursor isDarkMode={isDarkMode} />}
       
       {/* Scroll to Top Button removed for better scrolling */}
     </div>

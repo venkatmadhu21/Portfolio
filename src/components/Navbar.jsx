@@ -27,14 +27,15 @@ const Navbar = ({
   
   return (
     <header 
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
+      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
         isScrolled 
           ? isDarkMode 
-            ? 'bg-[#111111]/90 shadow-lg backdrop-blur-sm' 
-            : 'bg-white/80 shadow-md backdrop-blur-sm border-b border-gray-200/50' 
+            ? 'bg-[#111111]/80 shadow-lg backdrop-blur-md border-b border-white/5' 
+            : 'bg-white/70 shadow-md backdrop-blur-md border-b border-gray-200/50' 
           : 'bg-transparent'
       }`}
     >
+      <div className="absolute inset-0 -z-10 bg-gradient-to-r from-primary-500/5 via-transparent to-secondary-500/5 opacity-50"></div>
       <div className="container mx-auto px-4 md:px-8 lg:px-16">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -52,7 +53,7 @@ const Navbar = ({
               }}
               className="flex items-center"
             >
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+              <div className={`w-10 h-10 rounded-full flex items-center justify-center transform hover:scale-110 transition-all duration-300 ${
                 isDarkMode 
                   ? 'bg-gradient-to-r from-primary-500 via-secondary-500 to-accent-500 text-white shadow-glow' 
                   : 'bg-gradient-to-r from-primary-500 via-secondary-500 to-accent-500 text-white shadow-glow'
@@ -82,7 +83,7 @@ const Navbar = ({
                     e.preventDefault();
                     onNavigate(item.id);
                   }}
-                  className={`relative px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 ${
+                  className={`relative px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:transform hover:translate-y-[-2px] ${
                     currentSection === item.id
                       ? isDarkMode 
                         ? 'text-secondary-400' 
