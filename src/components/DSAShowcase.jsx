@@ -55,7 +55,7 @@ const cpProfile = {
     {
       name: "LeetCode",
       username: "venkatmadhumohan",
-      profileUrl: "https://leetcode.com/venkatmadhumohan/",
+      profileUrl: "https://leetcode.com/u/venkatmadhu/",
       ranking: "Top 35%",
       rating: 1500,
       badges: ["75 Days Challenge", "Daily Streak: 30+"],
@@ -65,7 +65,7 @@ const cpProfile = {
     {
       name: "CodeChef",
       username: "venkatmadhumohan",
-      profileUrl: "https://www.codechef.com/users/venkatmadhumohan",
+      profileUrl: "https://www.codechef.com/users/venkymnky",
       ranking: "1★ Coder",
       rating: 1350,
       badges: ["Beginner Problem Solver"],
@@ -75,7 +75,7 @@ const cpProfile = {
     {
       name: "HackerRank",
       username: "venkatmadhumohan",
-      profileUrl: "https://www.hackerrank.com/venkatmadhumohan",
+      profileUrl: "https://www.hackerrank.com/profile/venkatmadhu232",
       ranking: "5★ in Problem Solving",
       badges: ["Problem Solving (Basic)", "Python (Intermediate)"],
       certificates: ["Problem Solving (Basic)", "Python (Basic)"],
