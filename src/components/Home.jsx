@@ -5,6 +5,16 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
   // Ref for container
   const containerRef = useRef(null);
   
+  // Function to handle resume download
+  const handleResumeDownload = () => {
+    const link = document.createElement('a');
+    link.href = '/images/projects/venkatresume_1.docx (1).pdf';
+    link.download = 'Venkat_Madhu_Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+  
   // Animation variants - optimized for mobile
   const fadeUpVariant = {
     hidden: { opacity: 0, y: isMobile ? 10 : 20 },
@@ -232,36 +242,54 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
             />
           </motion.a>
           
-          <motion.a
-            href="#contact"
-            onClick={(e) => {
-              e.preventDefault();
-              onNavigate('contact');
-            }}
-            whileHover={!isMobile ? { y: -2 } : {}}
+          <motion.button
+            onClick={handleResumeDownload}
+            whileHover={!isMobile ? { y: -2, scale: 1.02 } : {}}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="accent-button group h-12 sm:h-14 px-4 sm:px-6 text-xs sm:text-sm font-semibold flex items-center justify-center w-full sm:w-auto"
+            className="accent-button group h-12 sm:h-14 px-4 sm:px-6 text-xs sm:text-sm font-semibold flex items-center justify-center w-full sm:w-auto relative overflow-hidden"
           >
             <motion.span 
-              className="flex items-center"
+              className="flex items-center relative z-10"
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.9 }}
             >
-              Get In Touch
+              <span className="hidden sm:inline">Download Resume</span>
+              <span className="sm:hidden">Resume</span>
               <motion.svg 
                 className="w-5 h-5 ml-2" 
                 fill="none" 
                 viewBox="0 0 24 24" 
                 stroke="currentColor"
-                whileHover={{ x: 8, scale: 1.1 }}
+                whileHover={{ y: 2, scale: 1.1 }}
                 transition={{ type: "spring", stiffness: 400, damping: 10 }}
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
               </motion.svg>
             </motion.span>
-          </motion.a>
+            
+            {/* Animated background effect */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-emerald-500/20 to-teal-500/20 opacity-0"
+              whileHover={{ opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            />
+            
+            {/* Pulse effect for emphasis */}
+            <motion.div
+              className="absolute inset-0 bg-gradient-to-r from-emerald-400/30 to-teal-400/30 rounded-xl opacity-0"
+              animate={{
+                opacity: [0, 0.3, 0],
+                scale: [1, 1.05, 1],
+              }}
+              transition={{
+                duration: 3,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+          </motion.button>
         </motion.div>
         
         {/* Social Links */}
