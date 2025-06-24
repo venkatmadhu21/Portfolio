@@ -22,7 +22,7 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
   return (
     <motion.div 
       ref={containerRef}
-      className="container mx-auto px-4 md:px-8 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-6 lg:gap-12 min-h-screen pt-16 md:pt-8 lg:pt-0 relative"
+      className="container mx-auto px-4 sm:px-6 md:px-8 lg:px-16 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 min-h-screen pt-20 sm:pt-16 md:pt-8 lg:pt-0 relative"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
@@ -36,7 +36,7 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
       )}
       
       {/* Left content section */}
-      <div className="max-w-3xl lg:w-3/5 lg:pr-6 mb-8 lg:mb-0 relative">
+      <div className="w-full max-w-3xl lg:w-3/5 lg:pr-6 mb-8 lg:mb-0 relative">
         {!isMobile && (
           <div className="absolute top-20 right-10 w-64 h-64 opacity-20 blur-3xl bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full animate-pulse-slow"></div>
         )}
@@ -48,7 +48,7 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
           className="mb-3 relative inline-block"
         >
           <div className="absolute -inset-1 bg-gradient-to-r from-primary-500 to-secondary-500 rounded-lg blur opacity-20 group-hover:opacity-30 transition duration-1000"></div>
-          <p className="font-mono text-lg tracking-wider text-primary-400 opacity-90 relative">
+          <p className="font-mono text-sm sm:text-base md:text-lg tracking-wider text-primary-400 opacity-90 relative">
             Hello world, I'm
           </p>
         </motion.div>
@@ -59,7 +59,7 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
           variants={fadeUpVariant}
           initial="hidden"
           animate="visible"
-          className="section-title text-5xl md:text-6xl lg:text-7xl font-bold mb-4 tracking-tight leading-none bg-clip-text text-transparent bg-gradient-to-r from-primary-500 via-secondary-500 to-accent-500 animate-gradient-x dark:from-primary-400 dark:via-secondary-400 dark:to-accent-400"
+          className="section-title text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-4 tracking-tight leading-tight sm:leading-none bg-clip-text text-transparent bg-gradient-to-r from-primary-500 via-secondary-500 to-accent-500 animate-gradient-x dark:from-primary-400 dark:via-secondary-400 dark:to-accent-400"
         >
           Venkat Madhu Mohan<span className="text-primary-400">.</span>
         </motion.h1>
@@ -69,7 +69,7 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
           variants={fadeUpVariant}
           initial="hidden"
           animate="visible"
-          className={`text-2xl md:text-3xl lg:text-4xl font-bold mb-6 ${isDarkMode ? 'text-dark-300/80' : 'text-gray-700'} tracking-tight`}
+          className={`text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold mb-6 ${isDarkMode ? 'text-dark-300/80' : 'text-gray-700'} tracking-tight`}
         >
           I craft digital experiences that matter.
         </motion.h2>
@@ -79,7 +79,7 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
           variants={fadeUpVariant}
           initial="hidden"
           animate="visible"
-          className={`text-base md:text-lg lg:text-xl max-w-2xl mb-10 ${isDarkMode ? 'text-dark-300/90' : 'text-gray-700'} leading-relaxed`}
+          className={`text-sm sm:text-base md:text-lg lg:text-xl max-w-2xl mb-8 sm:mb-10 ${isDarkMode ? 'text-dark-300/90' : 'text-gray-700'} leading-relaxed`}
         >
           A  <span className="text-primary-400 font-medium">Computer Science</span> student at Keshav Memorial College of Engineering with a passion for creating innovative solutions. I blend strong fundamentals in <span className="text-secondary-400 font-medium">C++ and data structures</span> with expertise in <span className="text-primary-400 font-medium">full-stack web development</span>.
           <br/><br/>
@@ -91,7 +91,7 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
           variants={fadeUpVariant}
           initial="hidden"
           animate="visible"
-          className="flex flex-wrap gap-4"
+          className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4"
         >
           <motion.a
             href="#projects"
@@ -102,7 +102,7 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
             whileHover={!isMobile ? { scale: 1.02 } : {}}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="projects-anatomy-button group relative cursor-pointer flex items-center justify-center gap-3 text-sm font-semibold text-white border-2 h-14 px-6 rounded-xl transform scale-90 transition-all duration-300 hover:scale-100 overflow-visible"
+            className="projects-anatomy-button group relative cursor-pointer flex items-center justify-center gap-2 sm:gap-3 text-xs sm:text-sm font-semibold text-white border-2 h-12 sm:h-14 px-4 sm:px-6 rounded-xl transform scale-90 transition-all duration-300 hover:scale-100 overflow-visible w-full sm:w-auto"
             style={{
               background: isDarkMode 
                 ? 'linear-gradient(135deg, #0ea5e9, #0284c7)'
@@ -115,11 +115,13 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
           >
             {/* Tech Stack Icon */}
             <div className="stack-icon relative">
-              <span className="stack-label opacity-0 invisible scale-150 group-hover:opacity-100 group-hover:visible group-hover:scale-100 transition-all duration-300 text-blue-200 absolute text-xs -left-12 -top-12 bg-gray-900/90 px-2 py-1 rounded backdrop-blur-sm border border-blue-400/30 shadow-lg shadow-blue-500/20">
-                Tech Stack
-              </span>
+              {!isMobile && (
+                <span className="stack-label opacity-0 invisible scale-150 group-hover:opacity-100 group-hover:visible group-hover:scale-100 transition-all duration-300 text-blue-200 absolute text-xs -left-12 -top-12 bg-gray-900/90 px-2 py-1 rounded backdrop-blur-sm border border-blue-400/30 shadow-lg shadow-blue-500/20">
+                  Tech Stack
+                </span>
+              )}
               <motion.div 
-                className="relative flex items-center justify-center w-6 h-6"
+                className="relative flex items-center justify-center w-5 h-5 sm:w-6 sm:h-6"
                 whileHover={!isMobile ? { rotate: 180 } : {}}
                 transition={{ duration: 0.3 }}
               >
@@ -130,10 +132,14 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
               </motion.div>
             </div>
 
-            <span className="title relative z-10 font-bold tracking-wide">Explore My Projects</span>
+            <span className="title relative z-10 font-bold tracking-wide">
+              <span className="hidden sm:inline">Explore My Projects</span>
+              <span className="sm:hidden">My Projects</span>
+            </span>
 
             {/* Project Count Indicator */}
-            <div className="project-count absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 invisible scale-150 group-hover:opacity-100 group-hover:visible group-hover:scale-100 transition-all duration-300">
+            {!isMobile && (
+              <div className="project-count absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 invisible scale-150 group-hover:opacity-100 group-hover:visible group-hover:scale-100 transition-all duration-300">
               <div className="flex flex-col items-center">
                 <div className="w-6 h-0.5 bg-gradient-to-r from-blue-400 to-transparent shadow-sm shadow-blue-400/50"></div>
                 <div className="w-0.5 h-3 bg-blue-400 mt-1 shadow-sm shadow-blue-400/50"></div>
@@ -141,10 +147,12 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
                   <span className="text-blue-200 text-xs font-mono">12+ Projects</span>
                 </div>
               </div>
-            </div>
+              </div>
+            )}
 
             {/* Technology Diversity Indicator */}
-            <div className="tech-diversity absolute -right-8 top-1/2 -translate-y-1/2 opacity-0 invisible scale-150 group-hover:opacity-100 group-hover:visible group-hover:scale-100 transition-all duration-300">
+            {!isMobile && (
+              <div className="tech-diversity absolute -right-8 top-1/2 -translate-y-1/2 opacity-0 invisible scale-150 group-hover:opacity-100 group-hover:visible group-hover:scale-100 transition-all duration-300">
               <div className="flex flex-col items-center">
                 <div className="w-6 h-0.5 bg-gradient-to-l from-blue-400 to-transparent shadow-sm shadow-blue-400/50"></div>
                 <div className="w-0.5 h-3 bg-blue-400 mt-1 shadow-sm shadow-blue-400/50"></div>
@@ -152,10 +160,12 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
                   <span className="text-blue-200 text-xs font-mono">5+ Technologies</span>
                 </div>
               </div>
-            </div>
+              </div>
+            )}
 
             {/* Project Categories */}
-            <div className="categories absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 invisible scale-150 group-hover:opacity-100 group-hover:visible group-hover:scale-100 transition-all duration-300">
+            {!isMobile && (
+              <div className="categories absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 invisible scale-150 group-hover:opacity-100 group-hover:visible group-hover:scale-100 transition-all duration-300">
               <div className="flex items-center space-x-2">
                 <div className="bg-gray-900/90 backdrop-blur-sm border border-blue-400/30 rounded-full px-2 py-1 shadow-lg shadow-blue-500/20">
                   <span className="text-blue-200 text-xs font-mono">Full-Stack</span>
@@ -165,7 +175,8 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
                 </div>
               </div>
               <div className="w-0.5 h-3 bg-gradient-to-b from-blue-400/80 to-transparent mx-auto mt-1 shadow-sm shadow-blue-400/50"></div>
-            </div>
+              </div>
+            )}
 
 
 
@@ -230,7 +241,7 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
             whileHover={!isMobile ? { y: -2 } : {}}
             whileTap={{ scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="accent-button group h-14 px-6 text-sm font-semibold flex items-center justify-center"
+            className="accent-button group h-12 sm:h-14 px-4 sm:px-6 text-xs sm:text-sm font-semibold flex items-center justify-center w-full sm:w-auto"
           >
             <motion.span 
               className="flex items-center"
@@ -259,11 +270,11 @@ const Home = ({ isDarkMode, onNavigate, isMobile }) => {
           variants={fadeUpVariant}
           initial="hidden"
           animate="visible"
-          className="flex items-center mt-12 space-x-6"
+          className="flex items-center mt-8 sm:mt-12 space-x-4 sm:space-x-6"
         >
           <div className={`w-16 h-px bg-gradient-to-r from-transparent ${isDarkMode ? 'via-dark-700' : 'via-gray-300'} to-transparent`}></div>
           
-          <div className="flex space-x-4 relative group">
+          <div className="flex space-x-3 sm:space-x-4 relative group">
             <div className="absolute -inset-2 rounded-lg bg-gradient-to-r from-primary-500/20 via-secondary-500/20 to-accent-500/20 blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <motion.a
               href="https://github.com/venkatmadhu21"
