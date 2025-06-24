@@ -1,8 +1,5 @@
-import React, { Suspense, useRef, useEffect } from 'react';
+import React, { useRef, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
-import HeroAnimation from './3d/HeroAnimation';
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, Float } from '@react-three/drei';
 
 const Home = ({ isDarkMode, onNavigate }) => {
   // Ref for container
@@ -99,8 +96,7 @@ const Home = ({ isDarkMode, onNavigate }) => {
               onNavigate('projects');
             }}
             whileHover={{ 
-              y: -5,
-              boxShadow: "0 10px 25px -5px rgba(14, 165, 233, 0.3)",
+              scale: 1.05,
               transition: { 
                 type: "spring", 
                 stiffness: 400, 
@@ -109,38 +105,128 @@ const Home = ({ isDarkMode, onNavigate }) => {
             }}
             whileTap={{ 
               scale: 0.95,
-              y: 0,
               transition: { 
                 type: "spring", 
                 stiffness: 400, 
                 damping: 10 
               }
             }}
-            className="glass-button group relative px-6 py-3 text-base font-medium"
+            className="projects-anatomy-button group relative cursor-pointer flex items-center justify-center gap-3 text-sm font-semibold text-white border-2 h-14 px-6 rounded-xl transform scale-90 transition-all duration-300 hover:scale-100 overflow-visible"
+            style={{
+              background: isDarkMode 
+                ? 'linear-gradient(135deg, #0ea5e9, #0284c7)'
+                : 'linear-gradient(135deg, #0284c7, #0369a1)',
+              borderColor: isDarkMode ? '#0ea5e9' : '#0284c7',
+              boxShadow: isDarkMode 
+                ? '0 0 30px rgba(14, 165, 233, 0.4), 0 0 60px rgba(14, 165, 233, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
+                : '0 0 30px rgba(2, 132, 199, 0.4), 0 0 60px rgba(2, 132, 199, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)'
+            }}
           >
-            <motion.span 
-              className="relative z-10 flex items-center"
-              initial={{ opacity: 0, x: -10 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: 0.8 }}
-            >
-              View My Projects
-              <motion.svg 
-                className="w-5 h-5 ml-2" 
-                fill="none" 
-                viewBox="0 0 24 24" 
-                stroke="currentColor"
-                whileHover={{ x: 8, rotate: 5 }}
-                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+            {/* Tech Stack Icon */}
+            <div className="stack-icon relative">
+              <span className="stack-label opacity-0 invisible scale-150 group-hover:opacity-100 group-hover:visible group-hover:scale-100 transition-all duration-300 text-blue-200 absolute text-xs -left-12 -top-12 bg-gray-900/90 px-2 py-1 rounded backdrop-blur-sm border border-blue-400/30 shadow-lg shadow-blue-500/20">
+                Tech Stack
+              </span>
+              <motion.div 
+                className="relative flex items-center justify-center w-6 h-6"
+                whileHover={{ rotate: 360 }}
+                transition={{ duration: 0.8, ease: "easeInOut" }}
               >
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </motion.svg>
-            </motion.span>
+                {/* Layered project icons */}
+                <div className="absolute inset-0 border-2 border-blue-300 rounded-sm opacity-80 group-hover:border-blue-100 transition-colors duration-300 shadow-sm shadow-blue-400/50"></div>
+                <div className="absolute inset-0.5 border border-blue-200 rounded-sm opacity-60 group-hover:border-blue-50 transition-colors duration-300"></div>
+                <div className="absolute inset-1.5 bg-white/30 rounded-sm"></div>
+              </motion.div>
+            </div>
+
+            <span className="title relative z-10 font-bold tracking-wide">Explore My Projects</span>
+
+            {/* Project Count Indicator */}
+            <div className="project-count absolute -left-8 top-1/2 -translate-y-1/2 opacity-0 invisible scale-150 group-hover:opacity-100 group-hover:visible group-hover:scale-100 transition-all duration-300">
+              <div className="flex flex-col items-center">
+                <div className="w-6 h-0.5 bg-gradient-to-r from-blue-400 to-transparent shadow-sm shadow-blue-400/50"></div>
+                <div className="w-0.5 h-3 bg-blue-400 mt-1 shadow-sm shadow-blue-400/50"></div>
+                <div className="bg-gray-900/90 backdrop-blur-sm border border-blue-400/30 rounded px-2 py-1 mt-1 shadow-lg shadow-blue-500/20">
+                  <span className="text-blue-200 text-xs font-mono">12+ Projects</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Technology Diversity Indicator */}
+            <div className="tech-diversity absolute -right-8 top-1/2 -translate-y-1/2 opacity-0 invisible scale-150 group-hover:opacity-100 group-hover:visible group-hover:scale-100 transition-all duration-300">
+              <div className="flex flex-col items-center">
+                <div className="w-6 h-0.5 bg-gradient-to-l from-blue-400 to-transparent shadow-sm shadow-blue-400/50"></div>
+                <div className="w-0.5 h-3 bg-blue-400 mt-1 shadow-sm shadow-blue-400/50"></div>
+                <div className="bg-gray-900/90 backdrop-blur-sm border border-blue-400/30 rounded px-2 py-1 mt-1 shadow-lg shadow-blue-500/20">
+                  <span className="text-blue-200 text-xs font-mono">5+ Technologies</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Project Categories */}
+            <div className="categories absolute -top-12 left-1/2 -translate-x-1/2 opacity-0 invisible scale-150 group-hover:opacity-100 group-hover:visible group-hover:scale-100 transition-all duration-300">
+              <div className="flex items-center space-x-2">
+                <div className="bg-gray-900/90 backdrop-blur-sm border border-blue-400/30 rounded-full px-2 py-1 shadow-lg shadow-blue-500/20">
+                  <span className="text-blue-200 text-xs font-mono">Full-Stack</span>
+                </div>
+                <div className="bg-gray-900/90 backdrop-blur-sm border border-blue-400/30 rounded-full px-2 py-1 shadow-lg shadow-blue-500/20">
+                  <span className="text-blue-200 text-xs font-mono">AI/ML</span>
+                </div>
+              </div>
+              <div className="w-0.5 h-3 bg-gradient-to-b from-blue-400/80 to-transparent mx-auto mt-1 shadow-sm shadow-blue-400/50"></div>
+            </div>
+
+
+
+            {/* Glowing border animation */}
             <motion.div
-              className="absolute inset-0 rounded-full bg-gradient-to-r from-white/10 to-white/5"
-              initial={{ scale: 0, opacity: 0 }}
-              whileHover={{ scale: 1, opacity: 1 }}
+              className="absolute inset-0 rounded-xl opacity-0 pointer-events-none"
+              style={{
+                background: 'transparent',
+                border: '2px solid transparent',
+                backgroundImage: isDarkMode 
+                  ? 'linear-gradient(135deg, rgba(14, 165, 233, 0.6), rgba(2, 132, 199, 0.6))'
+                  : 'linear-gradient(135deg, rgba(2, 132, 199, 0.6), rgba(3, 105, 161, 0.6))',
+                backgroundClip: 'padding-box',
+                boxShadow: isDarkMode
+                  ? '0 0 40px rgba(14, 165, 233, 0.6), 0 0 80px rgba(14, 165, 233, 0.3)'
+                  : '0 0 40px rgba(2, 132, 199, 0.6), 0 0 80px rgba(2, 132, 199, 0.3)'
+              }}
+              whileHover={{ opacity: 1 }}
               transition={{ duration: 0.3 }}
+            />
+
+            {/* Pulsing glow effect */}
+            <motion.div
+              className="absolute inset-0 rounded-xl opacity-0 pointer-events-none"
+              style={{
+                background: 'transparent',
+                boxShadow: isDarkMode
+                  ? '0 0 60px rgba(14, 165, 233, 0.8), 0 0 120px rgba(14, 165, 233, 0.4)'
+                  : '0 0 60px rgba(2, 132, 199, 0.8), 0 0 120px rgba(2, 132, 199, 0.4)'
+              }}
+              animate={{
+                opacity: [0, 0.3, 0],
+                scale: [1, 1.05, 1],
+              }}
+              transition={{
+                duration: 2,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+              whileHover={{ opacity: 0 }}
+            />
+
+            {/* Active state */}
+            <motion.div
+              className="absolute inset-0 rounded-xl opacity-0"
+              style={{
+                background: isDarkMode 
+                  ? 'linear-gradient(135deg, #0284c7, #0369a1)'
+                  : 'linear-gradient(135deg, #0ea5e9, #0284c7)',
+              }}
+              whileTap={{ opacity: 1 }}
+              transition={{ duration: 0.1 }}
             />
           </motion.a>
           
@@ -168,7 +254,7 @@ const Home = ({ isDarkMode, onNavigate }) => {
                 damping: 10 
               }
             }}
-            className="accent-button group px-6 py-3 text-base font-medium"
+            className="accent-button group h-14 px-6 text-sm font-semibold flex items-center justify-center"
           >
             <motion.span 
               className="flex items-center"
@@ -282,7 +368,7 @@ const Home = ({ isDarkMode, onNavigate }) => {
         </motion.div>
       </div>
       
-      {/* 3D Animation Section */}
+      {/* Hero Video Section */}
       <motion.div 
         className="lg:w-2/5 h-[400px] md:h-[450px] lg:h-[500px] relative flex items-center justify-center overflow-visible"
         initial={{ opacity: 0, scale: 0.8 }}
@@ -318,31 +404,126 @@ const Home = ({ isDarkMode, onNavigate }) => {
           </div>
         </div>
         
-        {/* 3D Animation Canvas */}
-        <div className="absolute inset-0 flex items-center justify-center">
-          <Suspense fallback={
-            <div className="h-full flex flex-col items-center justify-center">
-              <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-primary-500 mb-4"></div>
-              <p className="text-primary-400 font-mono text-sm animate-pulse">Loading 3D Experience...</p>
+        {/* 🌟 MIND-BLOWING INTERACTIVE UNIVERSE 🌟 */}
+        <div className="absolute inset-0 flex items-center justify-center rounded-2xl overflow-hidden cosmic-stage">
+          {/* Infinite Starfield Background */}
+          <div className="absolute inset-0 starfield-container">
+            <div className="stars stars-small"></div>
+            <div className="stars stars-medium"></div>
+            <div className="stars stars-large"></div>
+          </div>
+          
+          {/* Rotating Galaxy */}
+          <div className="absolute inset-0 galaxy-container">
+            <div className="galaxy galaxy-1"></div>
+            <div className="galaxy galaxy-2"></div>
+            <div className="galaxy galaxy-3"></div>
+          </div>
+          
+          {/* Floating Code Matrix */}
+          <div className="absolute inset-0 code-matrix">
+            <div className="code-stream code-stream-1">
+              <span>const</span><span>portfolio</span><span>=</span><span>awesome</span>
             </div>
-          }>
-            <Canvas camera={{ position: [0, 0, 5], fov: 75 }}>
-              <ambientLight intensity={isDarkMode ? 0.4 : 0.6} />
-              <directionalLight 
-                position={[10, 10, 5]} 
-                intensity={isDarkMode ? 0.5 : 0.7}
-              />
-              <Float
-                speed={1.2}
-                rotationIntensity={0.3}
-                floatIntensity={0.5}
-                floatingRange={[-0.2, 0.2]}
-              >
-                <HeroAnimation isDarkMode={isDarkMode} />
-              </Float>
-              <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
-            </Canvas>
-          </Suspense>
+            <div className="code-stream code-stream-2">
+              <span>function</span><span>createMagic</span><span>()</span><span>{'{'}</span>
+            </div>
+            <div className="code-stream code-stream-3">
+              <span>return</span><span>innovation</span><span>+</span><span>creativity</span>
+            </div>
+            <div className="code-stream code-stream-4">
+              <span>{'}'}</span><span>//</span><span>Epic</span><span>Code</span>
+            </div>
+          </div>
+          
+          {/* Central Holographic Display */}
+          <div className="relative z-10 holographic-display">
+            <div className="holo-frame">
+              <div className="holo-content">
+                <div className="holo-avatar">
+                  <div className="avatar-ring avatar-ring-1"></div>
+                  <div className="avatar-ring avatar-ring-2"></div>
+                  <div className="avatar-ring avatar-ring-3"></div>
+                  <div className="avatar-core">
+                    <div className="core-pulse"></div>
+                    <div className="core-text">DEV</div>
+                  </div>
+                </div>
+                
+                <div className="holo-stats">
+                  <div className="stat-item">
+                    <div className="stat-label">CREATIVITY</div>
+                    <div className="stat-bar">
+                      <div className="stat-fill stat-fill-1"></div>
+                    </div>
+                  </div>
+                  <div className="stat-item">
+                    <div className="stat-label">INNOVATION</div>
+                    <div className="stat-bar">
+                      <div className="stat-fill stat-fill-2"></div>
+                    </div>
+                  </div>
+                  <div className="stat-item">
+                    <div className="stat-label">EXCELLENCE</div>
+                    <div className="stat-bar">
+                      <div className="stat-fill stat-fill-3"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          {/* Orbiting Elements */}
+          <div className="absolute inset-0 orbital-system">
+            <div className="orbit orbit-1">
+              <div className="orbital-element element-react">⚛️</div>
+            </div>
+            <div className="orbit orbit-2">
+              <div className="orbital-element element-js">🚀</div>
+            </div>
+            <div className="orbit orbit-3">
+              <div className="orbital-element element-design">🎨</div>
+            </div>
+            <div className="orbit orbit-4">
+              <div className="orbital-element element-code">💻</div>
+            </div>
+          </div>
+          
+          {/* Quantum Particles */}
+          <div className="absolute inset-0 quantum-field">
+            <div className="quantum-particle q-particle-1"></div>
+            <div className="quantum-particle q-particle-2"></div>
+            <div className="quantum-particle q-particle-3"></div>
+            <div className="quantum-particle q-particle-4"></div>
+            <div className="quantum-particle q-particle-5"></div>
+            <div className="quantum-particle q-particle-6"></div>
+            <div className="quantum-particle q-particle-7"></div>
+            <div className="quantum-particle q-particle-8"></div>
+          </div>
+          
+          {/* Energy Waves */}
+          <div className="absolute inset-0 energy-waves">
+            <div className="wave wave-1"></div>
+            <div className="wave wave-2"></div>
+            <div className="wave wave-3"></div>
+          </div>
+          
+          {/* Holographic Grid */}
+          <div className="absolute inset-0 holo-grid">
+            <div className="grid-lines grid-horizontal"></div>
+            <div className="grid-lines grid-vertical"></div>
+          </div>
+          
+          {/* Floating Tech Icons */}
+          <div className="absolute inset-0 tech-icons">
+            <div className="tech-icon icon-1">⚡</div>
+            <div className="tech-icon icon-2">🔥</div>
+            <div className="tech-icon icon-3">✨</div>
+            <div className="tech-icon icon-4">💎</div>
+            <div className="tech-icon icon-5">🌟</div>
+            <div className="tech-icon icon-6">🚀</div>
+          </div>
         </div>
         
         {/* Decorative corner accents */}

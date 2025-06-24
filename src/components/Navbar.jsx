@@ -5,7 +5,6 @@ const Navbar = ({
   currentSection, 
   onNavigate, 
   isDarkMode, 
-  toggleTheme, 
   isMobileMenuOpen, 
   toggleMobileMenu,
   scrollPosition
@@ -15,6 +14,16 @@ const Navbar = ({
   useEffect(() => {
     setIsScrolled(scrollPosition > 50);
   }, [scrollPosition]);
+
+  // Function to handle resume download
+  const handleResumeDownload = () => {
+    const link = document.createElement('a');
+    link.href = '/images/projects/venkatresume_1.docx (1).pdf';
+    link.download = 'Venkat_Madhu_Resume.pdf'; // This will be the downloaded file name
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   
   const navItems = [
     { id: 'home', label: 'Home' },
@@ -30,15 +39,19 @@ const Navbar = ({
       className={`fixed top-0 left-0 right-0 z-40 transition-all duration-500 ${
         isScrolled 
           ? isDarkMode 
-            ? 'bg-[#111111]/80 shadow-lg backdrop-blur-md border-b border-white/5' 
-            : 'bg-white/70 shadow-md backdrop-blur-md border-b border-gray-200/50' 
+            ? 'bg-dark-950/85 shadow-lg backdrop-blur-xl border-b border-dark-800/50' 
+            : 'bg-white/85 shadow-md backdrop-blur-xl border-b border-gray-200/50' 
           : 'bg-transparent'
       }`}
     >
+      <div className={`absolute bottom-0 left-0 right-0 h-[1px] ${isScrolled ? 'opacity-100' : 'opacity-0'} transition-opacity duration-500`}>
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary-500/50 to-transparent"></div>
+      </div>
       <div className="absolute inset-0 -z-10 bg-gradient-to-r from-primary-500/5 via-transparent to-secondary-500/5 opacity-50"></div>
+
       <div className="container mx-auto px-4 md:px-8 lg:px-16">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
+        <div className="flex items-center justify-between h-20">
+          
           <motion.div 
             className="flex-shrink-0"
             initial={{ opacity: 0, x: -20 }}
@@ -51,25 +64,93 @@ const Navbar = ({
                 e.preventDefault();
                 onNavigate('home');
               }}
-              className="flex items-center"
+              className="flex items-center group"
             >
-              <div className={`w-10 h-10 rounded-full flex items-center justify-center transform hover:scale-110 transition-all duration-300 ${
-                isDarkMode 
-                  ? 'bg-gradient-to-r from-primary-500 via-secondary-500 to-accent-500 text-white shadow-glow' 
-                  : 'bg-gradient-to-r from-primary-500 via-secondary-500 to-accent-500 text-white shadow-glow'
-              }`}>
-                <span className="text-xl font-bold">VM</span>
+              <div className="relative w-12 h-12 transform group-hover:scale-110 transition-all duration-300">
+                {/* Outer glow ring */}
+                <motion.div 
+                  className="absolute -inset-1 rounded-full bg-gradient-to-r from-primary-400/20 to-primary-600/20 blur-lg"
+                  animate={{ 
+                    scale: [1, 1.1, 1],
+                    opacity: [0.4, 0.8, 0.4]
+                  }}
+                  transition={{ 
+                    duration: 3, 
+                    repeat: Infinity, 
+                    ease: "easeInOut" 
+                  }}
+                />
+                
+                {/* Main circular container */}
+                <motion.div 
+                  className="relative w-full h-full rounded-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-primary-500/30 shadow-2xl overflow-hidden"
+                  whileHover={{ 
+                    borderColor: "rgba(14, 165, 233, 0.6)",
+                    boxShadow: "0 0 30px rgba(14, 165, 233, 0.3)"
+                  }}
+                  transition={{ duration: 0.3 }}
+                >
+                  {/* Animated background pattern */}
+                  <motion.div 
+                    className="absolute inset-0 opacity-5"
+                    animate={{ 
+                      rotate: [0, 360],
+                    }}
+                    transition={{ 
+                      duration: 30, 
+                      repeat: Infinity, 
+                      ease: "linear" 
+                    }}
+                    style={{
+                      background: 'conic-gradient(from 0deg, transparent, rgba(14, 165, 233, 0.3), transparent, rgba(14, 165, 233, 0.3), transparent)'
+                    }}
+                  />
+                  
+                  {/* Minimal VM Letters */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <motion.div 
+                      className="relative text-2xl font-light tracking-wide"
+                      whileHover={{ scale: 1.05 }}
+                      transition={{ duration: 0.2 }}
+                      style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
+                    >
+                      <span className="bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent">
+                        VM
+                      </span>
+                    </motion.div>
+                  </div>
+                  
+                  {/* Modern accent ring */}
+                  <motion.div 
+                    className="absolute inset-1 rounded-full border border-primary-400/20"
+                    animate={{ 
+                      rotate: [0, -360],
+                      opacity: [0.3, 0.6, 0.3]
+                    }}
+                    transition={{ 
+                      rotate: { duration: 25, repeat: Infinity, ease: "linear" },
+                      opacity: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+                    }}
+                  />
+                </motion.div>
               </div>
-              <span className={`ml-2 text-lg font-semibold ${
-                isDarkMode ? 'text-white' : 'text-gray-800'
-              }`}>
-                Venkat Madhu
-              </span>
+              <div className="ml-3 flex flex-col">
+                <span className={`text-lg font-semibold leading-tight ${
+                  isDarkMode ? 'text-white' : 'text-gray-800'
+                } group-hover:text-primary-500 transition-colors duration-300`}>
+                  Venkat Madhu
+                </span>
+                <span className={`text-xs ${
+                  isDarkMode ? 'text-gray-400' : 'text-gray-500'
+                }`}>
+                  Software Engineer
+                </span>
+              </div>
             </a>
           </motion.div>
-          
+
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-1">
+          <nav className="hidden md:flex items-center space-x-1">
             {navItems.map((item, index) => (
               <motion.div
                 key={item.id}
@@ -83,7 +164,7 @@ const Navbar = ({
                     e.preventDefault();
                     onNavigate(item.id);
                   }}
-                  className={`relative px-3 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:transform hover:translate-y-[-2px] ${
+                  className={`relative px-4 py-2 rounded-md text-sm font-medium transition-all duration-300 hover:transform hover:-translate-y-1 ${
                     currentSection === item.id
                       ? isDarkMode 
                         ? 'text-secondary-400' 
@@ -98,7 +179,7 @@ const Navbar = ({
                     <motion.span
                       layoutId="navbar-indicator"
                       className={`absolute inset-0 rounded-md ${
-                        isDarkMode ? 'bg-white/5' : 'bg-black/5'
+                        isDarkMode ? 'bg-dark-800/80' : 'bg-gray-100/80'
                       }`}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -108,66 +189,37 @@ const Navbar = ({
                 </a>
               </motion.div>
             ))}
-            
+
             {/* Resume Button */}
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: 0.7 }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
+              className="ml-4"
             >
-              <a
-                href="/resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="ml-4 glass-button text-sm group flex items-center"
-              >
-                <span className="mr-1">Resume</span>
-                <svg 
-                  className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform duration-300" 
-                  fill="none" 
-                  viewBox="0 0 24 24" 
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                </svg>
-              </a>
+              <div className="resume-button">
+                <label className="label" onClick={handleResumeDownload}>
+                  <input type="checkbox" className="input" />
+                  <span className="circle">
+                    <svg className="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                      <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 19V5m0 14-4-4m4 4 4-4" />
+                    </svg>
+                    <div className="square" />
+                  </span>
+                  <p className="title">Resume</p>
+                  <p className="title">Downloaded</p>
+                </label>
+              </div>
             </motion.div>
-            
-            {/* Theme Toggle */}
-            <motion.button
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3, delay: 0.8 }}
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              whileTap={{ scale: 0.9 }}
-              onClick={toggleTheme}
-              className="ml-2 icon-button"
-              style={{
-                color: isDarkMode ? '#a78bfa' : '#0ea5e9'
-              }}
-              aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-            >
-              {isDarkMode ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                </svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                </svg>
-              )}
-            </motion.button>
           </nav>
-          
+
           {/* Mobile Menu Button */}
           <div className="md:hidden">
             <motion.button
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
               onClick={toggleMobileMenu}
-              className="icon-button"
+              className="icon-button p-2.5"
               style={{
                 color: isDarkMode ? '#cbd5e1' : '#475569'
               }}
@@ -187,7 +239,7 @@ const Navbar = ({
           </div>
         </div>
       </div>
-      
+
       {/* Mobile Menu */}
       <AnimatePresence>
         {isMobileMenuOpen && (
@@ -197,10 +249,10 @@ const Navbar = ({
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
             className={`md:hidden overflow-hidden ${
-              isDarkMode ? 'bg-[#1a1a1a]' : 'bg-white'
+              isDarkMode ? 'bg-dark-900/95 backdrop-blur-lg' : 'bg-white/95 backdrop-blur-lg'
             }`}
           >
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+            <div className="px-4 pt-3 pb-4 space-y-2 sm:px-5">
               {navItems.map((item, index) => (
                 <motion.a
                   key={item.id}
@@ -212,7 +264,7 @@ const Navbar = ({
                     e.preventDefault();
                     onNavigate(item.id);
                   }}
-                  className={`block px-3 py-2 rounded-md text-base font-medium ${
+                  className={`block px-4 py-3 rounded-lg text-base font-medium ${
                     currentSection === item.id
                       ? isDarkMode 
                         ? 'bg-dark-800/80 text-secondary-400 border-l-2 border-secondary-500' 
@@ -226,46 +278,20 @@ const Navbar = ({
                 </motion.a>
               ))}
               
-              <div className="flex items-center justify-between pt-2 mt-2 border-t border-gray-700">
-                <motion.a
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  href="/resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="glass-button text-sm group flex items-center justify-center"
-                >
-                  <span className="mr-1">Resume</span>
-                  <svg 
-                    className="w-4 h-4 transform group-hover:translate-x-0.5 transition-transform duration-300" 
-                    fill="none" 
-                    viewBox="0 0 24 24" 
-                    stroke="currentColor"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-                  </svg>
-                </motion.a>
-                
-                <motion.button
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={toggleTheme}
-                  className="icon-button"
-                  style={{
-                    color: isDarkMode ? '#a78bfa' : '#0ea5e9'
-                  }}
-                  aria-label={isDarkMode ? "Switch to light mode" : "Switch to dark mode"}
-                >
-                  {isDarkMode ? (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                  ) : (
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                    </svg>
-                  )}
-                </motion.button>
+              <div className="pt-3 mt-3 border-t border-gray-700/30">
+                <div className="resume-button">
+                  <label className="label" onClick={handleResumeDownload}>
+                    <input type="checkbox" className="input" />
+                    <span className="circle">
+                      <svg className="icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 19V5m0 14-4-4m4 4 4-4" />
+                      </svg>
+                      <div className="square" />
+                    </span>
+                    <p className="title">Resume</p>
+                    <p className="title">Downloaded</p>
+                  </label>
+                </div>
               </div>
             </div>
           </motion.div>

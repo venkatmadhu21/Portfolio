@@ -3,25 +3,62 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useScrollAnimation from '../hooks/useScrollAnimation';
 
+// Modern Tooltip Component for DSA Showcase
+const CustomTooltip = ({ children, content, isDarkMode }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  return (
+    <div 
+      className="relative inline-block"
+      onMouseEnter={() => setIsVisible(true)}
+      onMouseLeave={() => setIsVisible(false)}
+    >
+      {children}
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            className={`absolute bottom-full left-1/2 transform -translate-x-1/2 mb-3 px-4 py-2.5 rounded-xl text-sm font-medium whitespace-nowrap z-50 backdrop-blur-md ${
+              isDarkMode 
+                ? 'bg-gradient-to-r from-slate-800/95 to-slate-900/95 text-slate-100 border border-slate-600/50 shadow-xl shadow-slate-900/25' 
+                : 'bg-gradient-to-r from-white/95 to-gray-50/95 text-slate-700 border border-slate-200/80 shadow-xl shadow-slate-900/10'
+            }`}
+            style={{
+              backdropFilter: 'blur(16px)',
+              boxShadow: isDarkMode 
+                ? '0 12px 32px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(139, 92, 246, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.1)' 
+                : '0 12px 32px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(139, 92, 246, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.8)'
+            }}
+            initial={{ opacity: 0, y: 8, scale: 0.9 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 8, scale: 0.9 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+          >
+            {content}
+            <div className={`absolute top-full left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-[6px] border-r-[6px] border-t-[6px] border-transparent ${
+              isDarkMode ? 'border-t-slate-800/95' : 'border-t-white/95'
+            }`} 
+            style={{
+              filter: 'drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1))'
+            }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 // Competitive programming profile data
 const cpProfile = {
-  totalProblemsSolved: 150,
-  languages: ["C++", "Python", "JavaScript"],
+  languages: ["C++", "Python", "C"],
   platforms: [
     {
       name: "LeetCode",
       username: "venkatmadhumohan",
       profileUrl: "https://leetcode.com/venkatmadhumohan/",
-      problemsSolved: 85,
-      ranking: "Top 15%",
-      rating: 1750,
+      ranking: "Top 35%",
+      rating: 1500,
       badges: ["75 Days Challenge", "Daily Streak: 30+"],
-      contests: [
-        { name: "Weekly Contest 345", rank: 1250, date: "Jan 2024" },
-        { name: "Biweekly Contest 122", rank: 980, date: "Feb 2024" },
-        { name: "Weekly Contest 350", rank: 875, date: "Mar 2024" }
-
-      ],
       icon: "🟡",
       color: "amber"
     },
@@ -29,15 +66,9 @@ const cpProfile = {
       name: "CodeChef",
       username: "venkatmadhumohan",
       profileUrl: "https://www.codechef.com/users/venkatmadhumohan",
-      problemsSolved: 35,
       ranking: "1★ Coder",
       rating: 1350,
       badges: ["Beginner Problem Solver"],
-      contests: [
-        { name: "March Long Challenge 2024", rank: "1500+", date: "Mar 2024" },
-        { name: "February Cook-Off 2024", rank: "1200+", date: "Feb 2024" }
-
-      ],
       icon: "🔴",
       color: "red"
     },
@@ -45,10 +76,8 @@ const cpProfile = {
       name: "HackerRank",
       username: "venkatmadhumohan",
       profileUrl: "https://www.hackerrank.com/venkatmadhumohan",
-      problemsSolved: 120,
       ranking: "5★ in Problem Solving",
       badges: ["Problem Solving (Basic)", "Python (Intermediate)"],
-
       certificates: ["Problem Solving (Basic)", "Python (Basic)"],
       icon: "🟢",
       color: "green"
@@ -63,9 +92,7 @@ const DSAShowcase = ({ isDarkMode }) => {
 
   const [isVisible, setIsVisible] = useState(false);
   const [animatedNumbers, setAnimatedNumbers] = useState({
-    totalProblems: 0,
-    rating: 0,
-    solved: 0
+    rating: 0
   });
 
   useScrollAnimation();
@@ -80,9 +107,7 @@ const DSAShowcase = ({ isDarkMode }) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setAnimatedNumbers({
-        totalProblems: cpProfile.totalProblemsSolved,
-        rating: platformData.rating || 0,
-        solved: platformData.problemsSolved
+        rating: platformData.rating || 0
       });
     }, 500);
 
@@ -288,7 +313,7 @@ const DSAShowcase = ({ isDarkMode }) => {
             viewport={{ once: true }}
             transition={{ delay: 0.3 }}
           >
-            Competitive Programming
+           Problem-Solving Track
           </motion.h2>
           
           <motion.p 
@@ -313,76 +338,8 @@ const DSAShowcase = ({ isDarkMode }) => {
           whileInView="visible"
           viewport={{ once: true }}
 
-          className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16"
+          className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16"
         >
-          {/* Total Problems Card */}
-          <motion.div 
-
-
-            variants={itemVariants}
-            whileHover={cardHoverVariants.hover}
-            className="group relative bg-gradient-to-br from-primary-500/10 via-primary-400/5 to-primary-600/10 
-                       border border-primary-500/20 rounded-2xl p-8 shadow-xl backdrop-blur-sm
-                       hover:shadow-2xl hover:border-primary-400/30 transition-all duration-300"
-          >
-
-
-
-
-
-
-            <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-            
-            <div className="relative z-10">
-              <div className="flex items-center justify-between mb-6">
-                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">Problems Solved</h3>
-                <motion.div 
-                  className="p-3 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl shadow-lg"
-                  whileHover={{ rotate: 360 }}
-                  transition={{ duration: 0.6 }}
-                >
-                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                </motion.div>
-              </div>
-
-
-
-
-
-
-
-
-
-
-
-              
-              <div className="flex items-end mb-4">
-                <span className="text-6xl font-bold bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent">
-                  <AnimatedNumber value={cpProfile.totalProblemsSolved} />
-                </span>
-
-                <span className="ml-2 text-gray-600 dark:text-gray-400 mb-2 text-lg">problems</span>
-              </div>
-              
-              <div className="flex flex-wrap gap-2">
-                {cpProfile.languages.map((lang, index) => (
-                  <motion.span 
-                    key={index} 
-                    className="px-3 py-1 text-sm rounded-full bg-primary-500/10 text-primary-600 dark:text-primary-400 
-                               border border-primary-500/20 font-medium"
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ delay: 0.5 + index * 0.1 }}
-                    whileHover={{ scale: 1.05 }}
-                  >
-                    {lang}
-                  </motion.span>
-                ))}
-              </div>
-            </div>
-          </motion.div>
           
           {/* Top Platform Card */}
           <motion.div 
@@ -442,10 +399,6 @@ const DSAShowcase = ({ isDarkMode }) => {
                   <span className="text-gray-600 dark:text-gray-400">Ranking</span>
                   <span className="font-medium">{cpProfile.platforms[0].ranking}</span>
                 </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600 dark:text-gray-400">Problems</span>
-                  <span className="font-medium">{cpProfile.platforms[0].problemsSolved}</span>
-                </div>
               </div>
 
 
@@ -453,35 +406,102 @@ const DSAShowcase = ({ isDarkMode }) => {
 
             </div>
           </motion.div>
+
+          {/* Languages Card */}
+          <motion.div 
+            variants={itemVariants}
+            whileHover={cardHoverVariants.hover}
+            className="group relative bg-gradient-to-br from-primary-500/10 via-primary-400/5 to-primary-600/10 
+                       border border-primary-500/20 rounded-2xl p-8 shadow-xl backdrop-blur-sm
+                       hover:shadow-2xl hover:border-primary-400/30 transition-all duration-300"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-primary-500/5 to-transparent rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            
+            <div className="relative z-10">
+              <div className="flex items-center justify-between mb-6">
+                <h3 className="text-xl font-semibold text-gray-800 dark:text-gray-200">Languages Used</h3>
+                <motion.div 
+                  className="p-3 bg-gradient-to-br from-primary-500 to-primary-600 rounded-xl shadow-lg"
+                  whileHover={{ rotate: 360 }}
+                  transition={{ duration: 0.6 }}
+                >
+                  <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                  </svg>
+                </motion.div>
+              </div>
+              
+              <div className="flex flex-wrap gap-2">
+                {cpProfile.languages.map((lang, index) => {
+                  const langTooltips = {
+                    'C++': 'The language that makes you question your life choices',
+                    'Python': 'Snake charming for programmers',
+                    'JavaScript': 'The language that runs the internet and your patience'
+                  };
+                  
+                  return (
+                    <CustomTooltip
+                      key={index}
+                      content={langTooltips[lang] || 'Another weapon in my coding arsenal'}
+                      isDarkMode={isDarkMode}
+                    >
+                      <motion.span 
+                        className="px-4 py-2 text-lg rounded-full bg-primary-500/10 text-primary-600 dark:text-primary-400 
+                                   border border-primary-500/20 font-medium cursor-pointer"
+                        initial={{ opacity: 0, scale: 0 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 0.5 + index * 0.1 }}
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        {lang}
+                      </motion.span>
+                    </CustomTooltip>
+                  );
+                })}
+              </div>
+            </div>
+          </motion.div>
           
-          {/* Top Skills card removed */}
         </motion.div>
         
         {/* Platform Tabs */}
         <div className="mb-8">
           <div className="flex overflow-x-auto space-x-2 pb-2 mb-4">
-            {cpProfile.platforms.map((platform) => (
-              <motion.button
-                key={platform.name}
-                onClick={() => setActivePlatform(platform.name)}
-                className={`filter-button whitespace-nowrap ${
-                  activePlatform === platform.name ? 'active' : ''
-                } ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: 0.1 * cpProfile.platforms.indexOf(platform) }}
-              >
-                <motion.span
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ duration: 0.3, delay: 0.2 }}
+            {cpProfile.platforms.map((platform) => {
+              const tooltips = {
+                'LeetCode': 'Where algorithms go to get their PhD',
+                'CodeChef': 'Cooking up solutions one bug at a time',
+                'HackerRank': 'Ranking hackers since forever'
+              };
+              
+              return (
+                <CustomTooltip
+                  key={platform.name}
+                  content={tooltips[platform.name] || 'Another coding battlefield'}
+                  isDarkMode={isDarkMode}
                 >
-                  {platform.name}
-                </motion.span>
-              </motion.button>
-            ))}
+                  <motion.button
+                    onClick={() => setActivePlatform(platform.name)}
+                    className={`filter-button whitespace-nowrap ${
+                      activePlatform === platform.name ? 'active' : ''
+                    } ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.3, delay: 0.1 * cpProfile.platforms.indexOf(platform) }}
+                  >
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.3, delay: 0.2 }}
+                    >
+                      {platform.name}
+                    </motion.span>
+                  </motion.button>
+                </CustomTooltip>
+              );
+            })}
           </div>
           
           {/* Platform Content */}
@@ -500,86 +520,78 @@ const DSAShowcase = ({ isDarkMode }) => {
                     <h3 className="text-2xl font-bold mb-2">{platformData.name}</h3>
                     <div className="flex items-center">
                       <span className="text-gray-600 dark:text-gray-400 mr-2">@{platformData.username}</span>
-                      <a 
-                        href={platformData.profileUrl} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 inline-flex items-center"
+                      <CustomTooltip
+                        content="Stalk my coding journey legally"
+                        isDarkMode={isDarkMode}
                       >
-                        <span className="text-sm">View Profile</span>
-                        <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </a>
+                        <a 
+                          href={platformData.profileUrl} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 inline-flex items-center"
+                        >
+                          <span className="text-sm">View Profile</span>
+                          <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </a>
+                      </CustomTooltip>
                     </div>
                   </div>
                   
                   <div className="mt-4 md:mt-0 flex flex-wrap gap-2">
                     {platformData.badges && platformData.badges.map((badge, index) => (
-                      <span 
-                        key={index} 
-                        className="px-3 py-1 text-xs rounded-full bg-white/50 dark:bg-gray-800/50 shadow-sm"
+                      <CustomTooltip
+                        key={index}
+                        content="Achievement unlocked like a video game boss"
+                        isDarkMode={isDarkMode}
                       >
-                        {badge}
-                      </span>
+                        <span 
+                          className="px-3 py-1 text-xs rounded-full bg-white/50 dark:bg-gray-800/50 shadow-sm cursor-pointer hover:bg-white/70 dark:hover:bg-gray-800/70 transition-colors"
+                        >
+                          {badge}
+                        </span>
+                      </CustomTooltip>
                     ))}
                   </div>
                 </div>
                 
                 {/* Platform Stats */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                  <div className="bg-white/60 dark:bg-gray-800/60 rounded-lg p-4 shadow-sm">
-                    <h4 className="text-sm text-gray-500 dark:text-gray-400 mb-1">Problems Solved</h4>
-                    <p className="text-2xl font-bold">{platformData.problemsSolved}</p>
-                  </div>
-                  
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
                   {platformData.rating && (
-                    <div className="bg-white/60 dark:bg-gray-800/60 rounded-lg p-4 shadow-sm">
-                      <h4 className="text-sm text-gray-500 dark:text-gray-400 mb-1">Rating</h4>
-                      <p className="text-2xl font-bold">{platformData.rating}</p>
-                    </div>
+                    <CustomTooltip
+                      content="Numbers that make my parents proud"
+                      isDarkMode={isDarkMode}
+                    >
+                      <div className="bg-white/60 dark:bg-gray-800/60 rounded-lg p-4 shadow-sm cursor-pointer hover:bg-white/80 dark:hover:bg-gray-800/80 transition-colors">
+                        <h4 className="text-sm text-gray-500 dark:text-gray-400 mb-1">Rating</h4>
+                        <p className="text-2xl font-bold">{platformData.rating}</p>
+                      </div>
+                    </CustomTooltip>
                   )}
                   
-                  <div className="bg-white/60 dark:bg-gray-800/60 rounded-lg p-4 shadow-sm">
-                    <h4 className="text-sm text-gray-500 dark:text-gray-400 mb-1">Ranking</h4>
-                    <p className="text-2xl font-bold">{platformData.ranking}</p>
-                  </div>
-                  
-                  {platformData.contests && (
-                    <div className="bg-white/60 dark:bg-gray-800/60 rounded-lg p-4 shadow-sm">
-                      <h4 className="text-sm text-gray-500 dark:text-gray-400 mb-1">Contests</h4>
-                      <p className="text-2xl font-bold">{platformData.contests.length}</p>
+                  <CustomTooltip
+                    content="My position in the coding food chain"
+                    isDarkMode={isDarkMode}
+                  >
+                    <div className="bg-white/60 dark:bg-gray-800/60 rounded-lg p-4 shadow-sm cursor-pointer hover:bg-white/80 dark:hover:bg-gray-800/80 transition-colors">
+                      <h4 className="text-sm text-gray-500 dark:text-gray-400 mb-1">Ranking</h4>
+                      <p className="text-2xl font-bold">{platformData.ranking}</p>
                     </div>
-                  )}
+                  </CustomTooltip>
                 </div>
                 
                 {/* Tabs for platform details */}
                 <div className="border-b border-gray-200 dark:border-gray-700 mb-6">
                   <nav className="flex space-x-8">
-                    <motion.button
-                      onClick={() => setActiveTab('overview')}
-                      className={`py-4 px-1 border-b-2 font-medium text-sm transition-all duration-300 ${
-                        activeTab === 'overview'
-                          ? 'border-primary-500 text-primary-600 dark:text-primary-400'
-                          : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
-                      }`}
-                      whileHover={{ y: -2 }}
-                      whileTap={{ scale: 0.95 }}
+                    <CustomTooltip
+                      content="The boring but necessary details"
+                      isDarkMode={isDarkMode}
                     >
-                      <motion.span
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3 }}
-                      >
-                        Overview
-                      </motion.span>
-                    </motion.button>
-                    
-                    {platformData.contests && (
                       <motion.button
-                        onClick={() => setActiveTab('contests')}
+                        onClick={() => setActiveTab('overview')}
                         className={`py-4 px-1 border-b-2 font-medium text-sm transition-all duration-300 ${
-                          activeTab === 'contests'
+                          activeTab === 'overview'
                             ? 'border-primary-500 text-primary-600 dark:text-primary-400'
                             : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
                         }`}
@@ -589,24 +601,29 @@ const DSAShowcase = ({ isDarkMode }) => {
                         <motion.span
                           initial={{ opacity: 0, y: 10 }}
                           animate={{ opacity: 1, y: 0 }}
-                          transition={{ duration: 0.3, delay: 0.1 }}
+                          transition={{ duration: 0.3 }}
                         >
-                          Contests
+                          Overview
                         </motion.span>
                       </motion.button>
-                    )}
+                    </CustomTooltip>
                     
                     {platformData.certificates && (
-                      <button
-                        onClick={() => setActiveTab('certificates')}
-                        className={`py-4 px-1 border-b-2 font-medium text-sm ${
-                          activeTab === 'certificates'
-                            ? 'border-primary-500 text-primary-600 dark:text-primary-400'
-                            : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
-                        }`}
+                      <CustomTooltip
+                        content="My collection of digital bragging rights"
+                        isDarkMode={isDarkMode}
                       >
-                        Certificates
-                      </button>
+                        <button
+                          onClick={() => setActiveTab('certificates')}
+                          className={`py-4 px-1 border-b-2 font-medium text-sm ${
+                            activeTab === 'certificates'
+                              ? 'border-primary-500 text-primary-600 dark:text-primary-400'
+                              : 'border-transparent text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+                          }`}
+                        >
+                          Certificates
+                        </button>
+                      </CustomTooltip>
                     )}
                   </nav>
                 </div>
@@ -622,41 +639,9 @@ const DSAShowcase = ({ isDarkMode }) => {
                     >
                       <div className="prose prose-lg dark:prose-invert max-w-none">
                         <p>
-                          My competitive programming journey on {platformData.name} has helped me develop strong problem-solving skills and algorithmic thinking.
+                          My coding journey on {platformData.name} has helped me develop strong problem-solving skills and algorithmic thinking.
                           I've focused on mastering data structures and algorithms through consistent practice and participation in coding challenges.
                         </p>
-                      </div>
-                      
-                      {/* Recent submissions section removed */}
-                    </motion.div>
-                  )}
-                  
-                  {activeTab === 'contests' && platformData.contests && (
-                    <motion.div
-                      key="contests"
-                      variants={fadeIn}
-                      initial="hidden"
-                      animate="visible"
-                    >
-                      <div className="space-y-6">
-                        {platformData.contests.map((contest, index) => (
-                          <div 
-                            key={index} 
-                            className="bg-white/70 dark:bg-gray-800/70 rounded-lg p-5 shadow-sm"
-                          >
-                            <div className="flex flex-col md:flex-row md:justify-between md:items-center">
-                              <div>
-                                <h5 className="font-semibold text-lg">{contest.name}</h5>
-                                <p className="text-sm text-gray-500 dark:text-gray-400">{contest.date}</p>
-                              </div>
-                              <div className="mt-2 md:mt-0">
-                                <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-primary-100 text-primary-800 dark:bg-primary-900/30 dark:text-primary-300">
-                                  Rank: {contest.rank}
-                                </span>
-                              </div>
-                            </div>
-                          </div>
-                        ))}
                       </div>
                     </motion.div>
                   )}
