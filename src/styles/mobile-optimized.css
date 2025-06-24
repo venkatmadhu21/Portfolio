@@ -1,0 +1,172 @@
+/* Mobile-optimized CSS - Reduced animations for better performance */
+
+/* Disable heavy animations on mobile devices */
+@media (max-width: 768px) {
+  /* Disable complex animations on mobile */
+  * {
+    animation-duration: 0.3s !important;
+    transition-duration: 0.3s !important;
+  }
+  
+  /* Remove heavy transform animations */
+  .float-animation,
+  .pulse-glow,
+  .shimmer-effect,
+  .neon-glow,
+  .matrix-rain,
+  .scan-line {
+    animation: none !important;
+  }
+  
+  /* Simplify button effects */
+  .glass-button,
+  .accent-button,
+  .uniform-button {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    transition: all 0.2s ease !important;
+  }
+  
+  .glass-button::after,
+  .accent-button::after,
+  .uniform-button::before {
+    display: none !important;
+  }
+  
+  /* Disable 3D transforms on mobile */
+  .project-card-3d:hover {
+    transform: none !important;
+  }
+  
+  /* Simplify icon buttons */
+  .icon-button {
+    transition: transform 0.2s ease !important;
+  }
+  
+  .icon-button:hover {
+    transform: scale(1.05) !important;
+    animation: none !important;
+  }
+  
+  .icon-button::before,
+  .icon-button::after {
+    display: none !important;
+  }
+  
+  /* Disable gradient animations */
+  .gradient-text-animated {
+    animation: none !important;
+    background: linear-gradient(45deg, #3B82F6, #8B5CF6);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  /* Simplify navigation buttons */
+  .nav-button {
+    transition: all 0.2s ease !important;
+  }
+  
+  .nav-button:hover {
+    transform: none !important;
+    animation: none !important;
+  }
+  
+  .nav-button::before,
+  .nav-button::after {
+    display: none !important;
+  }
+  
+  /* Disable backdrop blur on older mobile devices */
+  @supports not (backdrop-filter: blur(10px)) {
+    .glass-card,
+    .glass-effect,
+    .glass-effect-dark {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+    }
+  }
+}
+
+/* Performance optimizations for all devices */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  .float-animation,
+  .pulse-glow,
+  .shimmer-effect,
+  .neon-glow,
+  .matrix-rain,
+  .scan-line,
+  .gradient-text-animated {
+    animation: none !important;
+  }
+}
+
+/* Optimize for touch devices */
+@media (hover: none) and (pointer: coarse) {
+  /* Remove hover effects on touch devices */
+  .icon-button:hover,
+  .nav-button:hover,
+  .glass-button:hover,
+  .accent-button:hover,
+  .uniform-button:hover {
+    transform: none !important;
+    animation: none !important;
+  }
+  
+  /* Increase touch targets */
+  .icon-button,
+  .nav-button {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Essential animations only - simplified versions */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.7; }
+}
+
+/* Mobile-friendly utility classes */
+.mobile-fade-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+.mobile-slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+.mobile-pulse {
+  animation: pulse 2s ease-in-out infinite;
+}

@@ -66,81 +66,27 @@ const Navbar = ({
               }}
               className="flex items-center group"
             >
-              <div className="relative w-12 h-12 transform group-hover:scale-110 transition-all duration-300">
-                {/* Outer glow ring */}
-                <motion.div 
-                  className="absolute -inset-1 rounded-full bg-gradient-to-r from-primary-400/20 to-primary-600/20 blur-lg"
-                  animate={{ 
-                    scale: [1, 1.1, 1],
-                    opacity: [0.4, 0.8, 0.4]
-                  }}
-                  transition={{ 
-                    duration: 3, 
-                    repeat: Infinity, 
-                    ease: "easeInOut" 
-                  }}
-                />
-                
-                {/* Main circular container */}
-                <motion.div 
-                  className="relative w-full h-full rounded-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-primary-500/30 shadow-2xl overflow-hidden"
-                  whileHover={{ 
-                    borderColor: "rgba(14, 165, 233, 0.6)",
-                    boxShadow: "0 0 30px rgba(14, 165, 233, 0.3)"
-                  }}
-                  transition={{ duration: 0.3 }}
-                >
-                  {/* Animated background pattern */}
-                  <motion.div 
-                    className="absolute inset-0 opacity-5"
-                    animate={{ 
-                      rotate: [0, 360],
-                    }}
-                    transition={{ 
-                      duration: 30, 
-                      repeat: Infinity, 
-                      ease: "linear" 
-                    }}
-                    style={{
-                      background: 'conic-gradient(from 0deg, transparent, rgba(14, 165, 233, 0.3), transparent, rgba(14, 165, 233, 0.3), transparent)'
-                    }}
-                  />
-                  
+              <div className="relative w-10 h-10 md:w-12 md:h-12 transform group-hover:scale-105 transition-transform duration-200">
+                {/* Simplified circular container */}
+                <div className="relative w-full h-full rounded-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-primary-500/30 shadow-lg overflow-hidden">
                   {/* Minimal VM Letters */}
                   <div className="absolute inset-0 flex items-center justify-center">
-                    <motion.div 
-                      className="relative text-2xl font-light tracking-wide"
-                      whileHover={{ scale: 1.05 }}
-                      transition={{ duration: 0.2 }}
-                      style={{ fontFamily: 'Inter, system-ui, sans-serif' }}
-                    >
+                    <div className="relative text-lg md:text-xl font-medium tracking-wide">
                       <span className="bg-gradient-to-r from-primary-400 to-primary-600 bg-clip-text text-transparent">
                         VM
                       </span>
-                    </motion.div>
+                    </div>
                   </div>
-                  
-                  {/* Modern accent ring */}
-                  <motion.div 
-                    className="absolute inset-1 rounded-full border border-primary-400/20"
-                    animate={{ 
-                      rotate: [0, -360],
-                      opacity: [0.3, 0.6, 0.3]
-                    }}
-                    transition={{ 
-                      rotate: { duration: 25, repeat: Infinity, ease: "linear" },
-                      opacity: { duration: 3, repeat: Infinity, ease: "easeInOut" }
-                    }}
-                  />
-                </motion.div>
+                </div>
               </div>
-              <div className="ml-3 flex flex-col">
-                <span className={`text-lg font-semibold leading-tight ${
+              <div className="ml-2 md:ml-3 flex flex-col">
+                <span className={`text-sm md:text-lg font-semibold leading-tight ${
                   isDarkMode ? 'text-white' : 'text-gray-800'
-                } group-hover:text-primary-500 transition-colors duration-300`}>
-                  Venkat Madhu
+                } group-hover:text-primary-500 transition-colors duration-200`}>
+                  <span className="hidden sm:inline">Venkat Madhu</span>
+                  <span className="sm:hidden">VM</span>
                 </span>
-                <span className={`text-xs ${
+                <span className={`text-xs hidden sm:block ${
                   isDarkMode ? 'text-gray-400' : 'text-gray-500'
                 }`}>
                   Software Engineer
@@ -215,14 +161,13 @@ const Navbar = ({
 
           {/* Mobile Menu Button */}
           <div className="md:hidden">
-            <motion.button
-              whileHover={{ scale: 1.1 }}
-              whileTap={{ scale: 0.9 }}
+            <button
               onClick={toggleMobileMenu}
-              className="icon-button p-2.5"
-              style={{
-                color: isDarkMode ? '#cbd5e1' : '#475569'
-              }}
+              className={`p-2 rounded-lg transition-colors duration-200 ${
+                isDarkMode 
+                  ? 'text-gray-300 hover:text-white hover:bg-gray-800' 
+                  : 'text-gray-600 hover:text-gray-900 hover:bg-gray-100'
+              }`}
               aria-expanded={isMobileMenuOpen}
             >
               <span className="sr-only">Open main menu</span>

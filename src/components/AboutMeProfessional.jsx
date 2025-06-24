@@ -4,40 +4,39 @@ import { motion, AnimatePresence } from 'framer-motion';
 const AboutMeProfessional = ({ isDarkMode }) => {
   const [activeSection, setActiveSection] = useState('overview');
   
-  // Professional animation variants
+  // Simplified animation variants for better mobile performance
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-        duration: 0.6,
-        ease: [0.215, 0.61, 0.355, 1]
+        staggerChildren: 0.05,
+        delayChildren: 0.1,
+        duration: 0.3,
+        ease: "easeOut"
       }
     }
   };
   
   const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
+    hidden: { opacity: 0, y: 20 },
     visible: { 
       opacity: 1, 
       y: 0,
       transition: { 
-        duration: 0.6,
-        ease: [0.215, 0.61, 0.355, 1]
+        duration: 0.3,
+        ease: "easeOut"
       }
     }
   };
   
   const cardVariants = {
-    hidden: { opacity: 0, scale: 0.95 },
+    hidden: { opacity: 0 },
     visible: { 
-      opacity: 1, 
-      scale: 1,
+      opacity: 1,
       transition: { 
-        duration: 0.5,
-        ease: [0.215, 0.61, 0.355, 1]
+        duration: 0.3,
+        ease: "easeOut"
       }
     }
   };

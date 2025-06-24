@@ -16,7 +16,7 @@ const CreativeInvitation = ({ onAccept, isDarkMode }) => {
     {
       title: "Welcome to My Digital Realm",
       subtitle: "Where creativity meets technology",
-      content: "I'm Vishnu Mohan, and I'd love to share my journey with you"
+      content: "I'm Venkat Madhu Mohan, and I'd love to share my journey with you"
     },
     {
       title: "Ready for the Experience?",

@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Suspense, useRef, lazy } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import './styles/smoothScroll.css';
+import './styles/mobile-optimized.css';
 
 // Import components
 import Home from './components/Home';
@@ -48,10 +49,10 @@ function App() {
   
   // Handle initial loading animation
   useEffect(() => {
-    // Simulate loading with a minimum time to show the animation
+    // Simulate loading with a shorter time to show the animation
     const timer = setTimeout(() => {
       setIsLoading(false);
-    }, 1800);
+    }, 800); // Reduced from 1800ms to 800ms for faster loading
     
     // Set initial dark mode class on body
     if (isDarkMode) {
@@ -63,7 +64,7 @@ function App() {
     return () => {
       clearTimeout(timer);
     };
-  }, []);
+  }, [isDarkMode]);
   
   // Handle scroll events and section detection
   useEffect(() => {
@@ -153,9 +154,26 @@ function App() {
   };
 
   const handleInvitationAccept = () => {
-    setShowInvitation(false);
-    // Save to localStorage so invitation won't show again
-    localStorage.setItem('hasSeenInvitation', 'true');
+    // Preload main content components before showing them
+    const preloadImage = new Image();
+    preloadImage.src = '/images/profile.webp'; // Preload profile image if used
+    
+    // Preload critical components
+    import('./components/Home');
+    import('./components/Navbar');
+    
+    // Set a very short loading time to ensure smooth transition
+    setIsLoading(true);
+    setTimeout(() => {
+      setShowInvitation(false);
+      // Save to localStorage so invitation won't show again
+      localStorage.setItem('hasSeenInvitation', 'true');
+      
+      // Quick loading transition
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 300);
+    }, 100);
   };
 
   // Utility function to reset invitation (for testing - can be called from browser console)
@@ -420,17 +438,23 @@ function App() {
         )}
       </AnimatePresence>
       
-      {/* Navbar */}
+      {/* Navbar - Preloaded to avoid delay */}
       {!showInvitation && (
-        <Navbar 
-          currentSection={currentSection}
-          onNavigate={handleNavigate}
-          isDarkMode={isDarkMode}
-          toggleTheme={toggleTheme}
-          isMobileMenuOpen={isMobileMenuOpen}
-          toggleMobileMenu={toggleMobileMenu}
-          scrollPosition={scrollPosition}
-        />
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Navbar 
+            currentSection={currentSection}
+            onNavigate={handleNavigate}
+            isDarkMode={isDarkMode}
+            toggleTheme={toggleTheme}
+            isMobileMenuOpen={isMobileMenuOpen}
+            toggleMobileMenu={toggleMobileMenu}
+            scrollPosition={scrollPosition}
+          />
+        </motion.div>
       )}
       
       {/* Particle Background */}
@@ -446,13 +470,20 @@ function App() {
           ref={mainRef}
           className="pt-16 relative z-10"
         >
-        {/* Home/Hero Section */}
+        {/* Home/Hero Section - Preloaded to avoid delay */}
         <section 
           id="home" 
           ref={sectionRefs.home}
           className="min-h-screen flex items-center py-8 md:py-0"
         >
-          <Home isDarkMode={isDarkMode} onNavigate={handleNavigate} />
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="w-full"
+          >
+            <Home isDarkMode={isDarkMode} onNavigate={handleNavigate} />
+          </motion.div>
         </section>
         
         {/* About Section */}
