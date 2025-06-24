@@ -1,41 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence, useMotionValue, useSpring, useTransform } from 'framer-motion';
 
-// Creative Magnetic Card Component
+// Simplified Card Component for better mobile performance
 const MagneticCard = ({ children, className, ...props }) => {
-  const ref = useRef(null);
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [5, -5]));
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-5, 5]));
-
-  const handleMouseMove = (e) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    const centerX = rect.left + rect.width / 2;
-    const centerY = rect.top + rect.height / 2;
-    const rotateXValue = (e.clientY - centerY) / rect.height;
-    const rotateYValue = (e.clientX - centerX) / rect.width;
-    x.set(rotateYValue);
-    y.set(rotateXValue);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-  };
+  const [isHovered, setIsHovered] = useState(false);
 
   return (
     <motion.div
-      ref={ref}
       className={className}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{ 
-        rotateX: rotateX, 
-        rotateY: rotateY,
-        transformStyle: "preserve-3d"
-      }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      whileHover={{ scale: 1.02 }}
+      transition={{ duration: 0.2 }}
       {...props}
     >
       {children}
@@ -43,29 +19,27 @@ const MagneticCard = ({ children, className, ...props }) => {
   );
 };
 
-// Floating Particle Background
+// Simplified Particle Background for mobile performance
 const FloatingParticles = ({ isDarkMode }) => {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(20)].map((_, i) => (
+      {[...Array(8)].map((_, i) => (
         <motion.div
           key={i}
           className={`absolute w-1 h-1 rounded-full ${
             isDarkMode 
-              ? ['bg-blue-400/30', 'bg-purple-400/30', 'bg-indigo-400/30'][i % 3]
-              : ['bg-blue-500/20', 'bg-purple-500/20', 'bg-indigo-500/20'][i % 3]
+              ? 'bg-blue-400/20'
+              : 'bg-blue-500/15'
           }`}
           animate={{
-            x: [0, 100, 0],
-            y: [0, -100, 0],
-            opacity: [0, 1, 0],
-            scale: [0, 1.5, 0]
+            y: [0, -50, 0],
+            opacity: [0.3, 0.8, 0.3]
           }}
           transition={{
-            duration: 8 + (i % 4),
+            duration: 4 + (i % 2),
             repeat: Infinity,
             ease: "easeInOut",
-            delay: i * 0.5
+            delay: i * 0.8
           }}
           style={{
             left: `${Math.random() * 100}%`,

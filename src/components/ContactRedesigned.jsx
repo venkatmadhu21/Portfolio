@@ -83,8 +83,8 @@ const ContactRedesigned = ({ isDarkMode }) => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3
+        staggerChildren: 0.1,
+        delayChildren: 0.1
       }
     }
   };
@@ -92,41 +92,36 @@ const ContactRedesigned = ({ isDarkMode }) => {
   const cardVariants = {
     hidden: { 
       opacity: 0, 
-      y: 50,
-      scale: 0.9
+      y: 20
     },
     visible: {
       opacity: 1,
       y: 0,
-      scale: 1,
       transition: {
-        type: "spring",
-        stiffness: 100,
-        damping: 15
+        duration: 0.3,
+        ease: "easeOut"
       }
     }
   };
 
   const titleVariants = {
-    hidden: { opacity: 0, y: -30 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
       transition: {
-        duration: 0.8,
+        duration: 0.4,
         ease: "easeOut"
       }
     }
   };
 
   const subtitleVariants = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      y: 0,
       transition: {
-        duration: 0.6,
-        delay: 0.2,
+        duration: 0.3,
+        delay: 0.1,
         ease: "easeOut"
       }
     }
@@ -177,11 +172,9 @@ const ContactRedesigned = ({ isDarkMode }) => {
           <motion.div
             key={method.id}
             variants={cardVariants}
-            whileHover={{ 
-              y: -8,
-              transition: { type: "spring", stiffness: 300, damping: 15 }
-            }}
+            whileHover={{ y: -4 }}
             whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.2 }}
             className="relative group cursor-pointer"
             onMouseEnter={() => setHoveredCard(method.id)}
             onMouseLeave={() => setHoveredCard(null)}

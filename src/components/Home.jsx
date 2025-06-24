@@ -1,20 +1,20 @@
 import React, { useRef, useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
 
-const Home = ({ isDarkMode, onNavigate }) => {
+const Home = ({ isDarkMode, onNavigate, isMobile }) => {
   // Ref for container
   const containerRef = useRef(null);
   
-  // Animation variants
+  // Animation variants - optimized for mobile
   const fadeUpVariant = {
-    hidden: { opacity: 0, y: 20 },
+    hidden: { opacity: 0, y: isMobile ? 10 : 20 },
     visible: (custom) => ({
       opacity: 1,
       y: 0,
       transition: { 
-        duration: 0.7, 
-        delay: custom * 0.1,
-        ease: [0.215, 0.61, 0.355, 1.0] // Cubic bezier for smooth animation
+        duration: isMobile ? 0.3 : 0.7, 
+        delay: isMobile ? custom * 0.05 : custom * 0.1,
+        ease: isMobile ? "easeOut" : [0.215, 0.61, 0.355, 1.0]
       }
     })
   };
@@ -27,15 +27,19 @@ const Home = ({ isDarkMode, onNavigate }) => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.8 }}
     >
-      {/* Background gradients */}
-      <div className="absolute inset-0 -z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-primary-500/5 via-transparent to-secondary-500/5 dark:from-primary-500/10 dark:to-secondary-500/10 blur-3xl animate-pulse-slow"></div>
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(14,165,233,0.1),transparent_50%)] animate-spin-slow"></div>
-      </div>
+      {/* Background gradients - simplified on mobile */}
+      {!isMobile && (
+        <div className="absolute inset-0 -z-10">
+          <div className="absolute inset-0 bg-gradient-to-b from-primary-500/5 via-transparent to-secondary-500/5 dark:from-primary-500/10 dark:to-secondary-500/10 blur-3xl animate-pulse-slow"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(14,165,233,0.1),transparent_50%)] animate-spin-slow"></div>
+        </div>
+      )}
       
       {/* Left content section */}
       <div className="max-w-3xl lg:w-3/5 lg:pr-6 mb-8 lg:mb-0 relative">
-        <div className="absolute top-20 right-10 w-64 h-64 opacity-20 blur-3xl bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full animate-pulse-slow"></div>
+        {!isMobile && (
+          <div className="absolute top-20 right-10 w-64 h-64 opacity-20 blur-3xl bg-gradient-to-r from-primary-500 to-secondary-500 rounded-full animate-pulse-slow"></div>
+        )}
         <motion.div
           custom={1}
           variants={fadeUpVariant}
@@ -95,22 +99,9 @@ const Home = ({ isDarkMode, onNavigate }) => {
               e.preventDefault();
               onNavigate('projects');
             }}
-            whileHover={{ 
-              scale: 1.05,
-              transition: { 
-                type: "spring", 
-                stiffness: 400, 
-                damping: 10 
-              }
-            }}
-            whileTap={{ 
-              scale: 0.95,
-              transition: { 
-                type: "spring", 
-                stiffness: 400, 
-                damping: 10 
-              }
-            }}
+            whileHover={!isMobile ? { scale: 1.02 } : {}}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.2 }}
             className="projects-anatomy-button group relative cursor-pointer flex items-center justify-center gap-3 text-sm font-semibold text-white border-2 h-14 px-6 rounded-xl transform scale-90 transition-all duration-300 hover:scale-100 overflow-visible"
             style={{
               background: isDarkMode 
@@ -129,8 +120,8 @@ const Home = ({ isDarkMode, onNavigate }) => {
               </span>
               <motion.div 
                 className="relative flex items-center justify-center w-6 h-6"
-                whileHover={{ rotate: 360 }}
-                transition={{ duration: 0.8, ease: "easeInOut" }}
+                whileHover={!isMobile ? { rotate: 180 } : {}}
+                transition={{ duration: 0.3 }}
               >
                 {/* Layered project icons */}
                 <div className="absolute inset-0 border-2 border-blue-300 rounded-sm opacity-80 group-hover:border-blue-100 transition-colors duration-300 shadow-sm shadow-blue-400/50"></div>
@@ -236,24 +227,9 @@ const Home = ({ isDarkMode, onNavigate }) => {
               e.preventDefault();
               onNavigate('contact');
             }}
-            whileHover={{ 
-              y: -5,
-              boxShadow: "0 10px 25px -5px rgba(139, 92, 246, 0.3)",
-              transition: { 
-                type: "spring", 
-                stiffness: 400, 
-                damping: 10 
-              }
-            }}
-            whileTap={{ 
-              scale: 0.95,
-              y: 0,
-              transition: { 
-                type: "spring", 
-                stiffness: 400, 
-                damping: 10 
-              }
-            }}
+            whileHover={!isMobile ? { y: -2 } : {}}
+            whileTap={{ scale: 0.98 }}
+            transition={{ duration: 0.2 }}
             className="accent-button group h-14 px-6 text-sm font-semibold flex items-center justify-center"
           >
             <motion.span 
@@ -293,12 +269,9 @@ const Home = ({ isDarkMode, onNavigate }) => {
               href="https://github.com/venkatmadhu21"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ 
-                y: -5, 
-                scale: 1.1,
-                transition: { type: "spring", stiffness: 400, damping: 10 }
-              }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={!isMobile ? { y: -2, scale: 1.05 } : {}}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
               className={`relative p-2.5 rounded-full ${isDarkMode ? 'bg-dark-800/40 text-dark-400' : 'bg-gray-200/80 text-gray-600'} hover:text-primary-400 transition-all duration-300 hover:shadow-lg hover:shadow-primary-500/20`}
             >
               <span className="sr-only">GitHub</span>
@@ -312,12 +285,9 @@ const Home = ({ isDarkMode, onNavigate }) => {
               href="https://www.linkedin.com/in/venkatmadhu"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ 
-                y: -5, 
-                scale: 1.1,
-                transition: { type: "spring", stiffness: 400, damping: 10 }
-              }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={!isMobile ? { y: -2, scale: 1.05 } : {}}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
               className={`relative p-2.5 rounded-full ${isDarkMode ? 'bg-dark-800/40 text-dark-400' : 'bg-gray-200/80 text-gray-600'} hover:text-secondary-400 transition-all duration-300 hover:shadow-lg hover:shadow-secondary-500/20`}
             >
               <span className="sr-only">LinkedIn</span>
@@ -331,12 +301,9 @@ const Home = ({ isDarkMode, onNavigate }) => {
               href="https://leetcode.com/u/venkatmadhu/"
               target="_blank"
               rel="noopener noreferrer"
-              whileHover={{ 
-                y: -5, 
-                scale: 1.1,
-                transition: { type: "spring", stiffness: 400, damping: 10 }
-              }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={!isMobile ? { y: -2, scale: 1.05 } : {}}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
               className={`relative p-2.5 rounded-full ${isDarkMode ? 'bg-dark-800/40 text-dark-400' : 'bg-gray-200/80 text-gray-600'} hover:text-accent-400 transition-all duration-300 hover:shadow-lg hover:shadow-accent-500/20`}
             >
               <span className="sr-only">LeetCode</span>
@@ -348,12 +315,9 @@ const Home = ({ isDarkMode, onNavigate }) => {
             
             <motion.a
               href="mailto:venkatmadhumohann@gmail.com"
-              whileHover={{ 
-                y: -5, 
-                scale: 1.1,
-                transition: { type: "spring", stiffness: 400, damping: 10 }
-              }}
-              whileTap={{ scale: 0.9 }}
+              whileHover={!isMobile ? { y: -2, scale: 1.05 } : {}}
+              whileTap={{ scale: 0.95 }}
+              transition={{ duration: 0.2 }}
               className={`relative p-2.5 rounded-full ${isDarkMode ? 'bg-dark-800/40 text-dark-400' : 'bg-gray-200/80 text-gray-600'} hover:text-secondary-400 transition-all duration-300 hover:shadow-lg hover:shadow-secondary-500/20`}
             >
               <span className="sr-only">Email</span>
@@ -388,9 +352,13 @@ const Home = ({ isDarkMode, onNavigate }) => {
           }
         }}
       >
-        {/* Decorative gradient blobs */}
-        <div className="absolute -top-8 -right-8 w-48 h-48 bg-primary-500/10 rounded-full blur-3xl"></div>
-        <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-secondary-500/10 rounded-full blur-3xl"></div>
+        {/* Decorative gradient blobs - disabled on mobile */}
+        {!isMobile && (
+          <>
+            <div className="absolute -top-8 -right-8 w-48 h-48 bg-primary-500/10 rounded-full blur-3xl"></div>
+            <div className="absolute -bottom-8 -left-8 w-48 h-48 bg-secondary-500/10 rounded-full blur-3xl"></div>
+          </>
+        )}
         
         {/* Glass card container */}
         <div className={`absolute inset-0 glass-card rounded-2xl backdrop-blur-sm ${
@@ -404,36 +372,37 @@ const Home = ({ isDarkMode, onNavigate }) => {
           </div>
         </div>
         
-        {/* 🌟 MIND-BLOWING INTERACTIVE UNIVERSE 🌟 */}
-        <div className="absolute inset-0 flex items-center justify-center rounded-2xl overflow-hidden cosmic-stage">
-          {/* Infinite Starfield Background */}
-          <div className="absolute inset-0 starfield-container">
-            <div className="stars stars-small"></div>
-            <div className="stars stars-medium"></div>
-            <div className="stars stars-large"></div>
-          </div>
-          
-          {/* Rotating Galaxy */}
-          <div className="absolute inset-0 galaxy-container">
-            <div className="galaxy galaxy-1"></div>
-            <div className="galaxy galaxy-2"></div>
-            <div className="galaxy galaxy-3"></div>
-          </div>
-          
-          {/* Floating Code Matrix */}
-          <div className="absolute inset-0 code-matrix">
-            <div className="code-stream code-stream-1">
-              <span>const</span><span>portfolio</span><span>=</span><span>awesome</span>
+        {/* Interactive Universe - Simplified on mobile */}
+        {!isMobile ? (
+          <div className="absolute inset-0 flex items-center justify-center rounded-2xl overflow-hidden cosmic-stage">
+            {/* Infinite Starfield Background */}
+            <div className="absolute inset-0 starfield-container">
+              <div className="stars stars-small"></div>
+              <div className="stars stars-medium"></div>
+              <div className="stars stars-large"></div>
             </div>
-            <div className="code-stream code-stream-2">
-              <span>function</span><span>createMagic</span><span>()</span><span>{'{'}</span>
+            
+            {/* Rotating Galaxy */}
+            <div className="absolute inset-0 galaxy-container">
+              <div className="galaxy galaxy-1"></div>
+              <div className="galaxy galaxy-2"></div>
+              <div className="galaxy galaxy-3"></div>
             </div>
-            <div className="code-stream code-stream-3">
-              <span>return</span><span>innovation</span><span>+</span><span>creativity</span>
-            </div>
-            <div className="code-stream code-stream-4">
-              <span>{'}'}</span><span>//</span><span>Epic</span><span>Code</span>
-            </div>
+            
+            {/* Floating Code Matrix */}
+            <div className="absolute inset-0 code-matrix">
+              <div className="code-stream code-stream-1">
+                <span>const</span><span>portfolio</span><span>=</span><span>awesome</span>
+              </div>
+              <div className="code-stream code-stream-2">
+                <span>function</span><span>createMagic</span><span>()</span><span>{'{'}</span>
+              </div>
+              <div className="code-stream code-stream-3">
+                <span>return</span><span>innovation</span><span>+</span><span>creativity</span>
+              </div>
+              <div className="code-stream code-stream-4">
+                <span>{'}'}</span><span>//</span><span>Epic</span><span>Code</span>
+              </div>
           </div>
           
           {/* Central Holographic Display */}
@@ -525,6 +494,20 @@ const Home = ({ isDarkMode, onNavigate }) => {
             <div className="tech-icon icon-6">🚀</div>
           </div>
         </div>
+        ) : (
+          // Simple mobile alternative
+          <div className="absolute inset-0 flex items-center justify-center rounded-2xl overflow-hidden">
+            <div className="text-center">
+              <div className="text-6xl mb-4">💻</div>
+              <div className="text-lg font-semibold bg-gradient-to-r from-primary-400 to-secondary-400 bg-clip-text text-transparent">
+                Full Stack Developer
+              </div>
+              <div className="text-sm text-gray-500 mt-2">
+                Building Amazing Experiences
+              </div>
+            </div>
+          </div>
+        )}
         
         {/* Decorative corner accents */}
         <div className="absolute top-0 right-0 w-12 h-12 overflow-hidden">

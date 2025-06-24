@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const SkillsCreative = ({ isDarkMode }) => {
   const [activeSkill, setActiveSkill] = useState(0);
-  const [isAutoPlaying, setIsAutoPlaying] = useState(true);
+  const [isAutoPlaying, setIsAutoPlaying] = useState(false); // Disabled for better mobile performance
   const [selectedCategory, setSelectedCategory] = useState('all');
 
   // Enhanced skills data with better icons and focused skills
@@ -186,10 +186,10 @@ const SkillsCreative = ({ isDarkMode }) => {
 
   const currentSkill = filteredSkills[activeSkill];
 
-  // Optimized floating particles animation
+  // Simplified floating particles animation for mobile performance
   const FloatingParticles = ({ particles, skillName }) => (
-    <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-20">
-      {particles.slice(0, 3).map((particle, index) => (
+    <div className="absolute inset-0 pointer-events-none overflow-hidden opacity-15">
+      {particles.slice(0, 2).map((particle, index) => (
         <motion.div
           key={`${skillName}-${particle}-${index}`}
           className="absolute text-xl"
@@ -199,14 +199,13 @@ const SkillsCreative = ({ isDarkMode }) => {
             willChange: 'transform'
           }}
           animate={{ 
-            y: [-10, -25, -10],
-            rotate: [0, 180, 360],
-            scale: [0.8, 1.2, 0.8]
+            y: [-5, -15, -5],
+            opacity: [0.3, 0.8, 0.3]
           }}
           transition={{
-            duration: 6 + index,
+            duration: 3 + index,
             repeat: Infinity,
-            delay: index * 1.5,
+            delay: index * 0.8,
             ease: "easeInOut"
           }}
         >

@@ -35,6 +35,18 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
   const [showScrollToTop, setShowScrollToTop] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Detect mobile device for performance optimization
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
   
   // Refs for sections to enable intersection observer
   const mainRef = useRef(null);
@@ -457,8 +469,8 @@ function App() {
         </motion.div>
       )}
       
-      {/* Particle Background */}
-      {!isLoading && !showInvitation && (
+      {/* Particle Background - Disabled on mobile for better performance */}
+      {!isLoading && !showInvitation && !isMobile && (
         <Suspense fallback={null}>
           <ParticleBackground isDarkMode={isDarkMode} />
         </Suspense>
@@ -482,7 +494,7 @@ function App() {
             transition={{ duration: 0.5 }}
             className="w-full"
           >
-            <Home isDarkMode={isDarkMode} onNavigate={handleNavigate} />
+            <Home isDarkMode={isDarkMode} onNavigate={handleNavigate} isMobile={isMobile} />
           </motion.div>
         </section>
         
